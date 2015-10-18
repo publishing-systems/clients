@@ -340,6 +340,8 @@ public class mobileread_wiki_ebook_list_downloader1
 
         for (int i = 0; i < threadLinks.size(); i++)
         {
+            int attachmentLinkCount = 0;
+
             File attachmentListFile = new File(tempDirectory.getAbsolutePath() + File.separator + i + ".xml");
 
             if (attachmentListFile.length() <= 0)
@@ -392,7 +394,7 @@ public class mobileread_wiki_ebook_list_downloader1
                             while (eventReader.hasNext() == true)
                             {
                                 event = eventReader.nextEvent();
-                                
+
                                 if (event.isCharacters() == true)
                                 {
                                     attachmentLink += event.asCharacters().getData();
@@ -402,16 +404,32 @@ public class mobileread_wiki_ebook_list_downloader1
                                     break;
                                 }
                             }
-                            
+
                             if (attachmentName.isEmpty() == true)
                             {
                                 attachmentName = "attachment_" + linkEntryCount;
                             }
-                            
+                            else
+                            {
+                                // Exclude proprietary formats.
+
+                                if (attachmentName.toLowerCase().endsWith(".mobi") == true ||
+                                    attachmentName.toLowerCase().endsWith(".azw") == true ||
+                                    attachmentName.toLowerCase().endsWith(".azw3") == true ||
+                                    attachmentName.toLowerCase().endsWith(".rar") == true ||
+                                    attachmentName.toLowerCase().endsWith(".lrf") == true ||
+                                    attachmentName.toLowerCase().endsWith(".lrx") == true ||
+                                    attachmentName.toLowerCase().endsWith(".lit") == true)
+                                {
+                                    continue;
+                                }
+                            }
+
                             if (attachmentLink.isEmpty() == false)
                             {
                                 linkEntryCount++;
                                 attachmentLinks.add(new AttachmentInfo(attachmentLink, attachmentName));
+                                attachmentLinkCount++;
                             }
                             else
                             {
@@ -431,6 +449,11 @@ public class mobileread_wiki_ebook_list_downloader1
             {
                 ex.printStackTrace();
                 System.exit(-1);
+            }
+
+            if (attachmentLinkCount == 0)
+            {
+                System.out.print("mobileread_wiki_ebook_list_downloader1: No attachment links in '" + attachmentListFile.getAbsolutePath() + "' of thread '" + threadLinks.get(i) + "'.\n");
             }
         }
 
@@ -484,13 +507,13 @@ public class mobileread_wiki_ebook_list_downloader1
                 }
             }
         }
-        
+
         if (file.delete() != true)
         {
             System.out.println("mobileread_wiki_ebook_list_downloader1: Can't delete '" + file.getAbsolutePath() + "'.");
             return -1;
         }
-    
+
         return 0;
     }
 
@@ -501,20 +524,20 @@ public class mobileread_wiki_ebook_list_downloader1
             System.out.println("mobileread_wiki_ebook_list_downloader1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
             return -1;
         }
-        
+
         if (from.isFile() != true)
         {
             System.out.println("mobileread_wiki_ebook_list_downloader1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
             return -2;
         }
-        
+
         if (from.canRead() != true)
         {
             System.out.println("mobileread_wiki_ebook_list_downloader1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
             return -3;
         }
-    
-    
+
+
         byte[] buffer = new byte[1024];
 
         try
@@ -523,15 +546,15 @@ public class mobileread_wiki_ebook_list_downloader1
 
             FileInputStream reader = new FileInputStream(from);
             FileOutputStream writer = new FileOutputStream(to);
-            
+
             int bytesRead = reader.read(buffer, 0, buffer.length);
-            
+
             while (bytesRead > 0)
             {
                 writer.write(buffer, 0, bytesRead);
                 bytesRead = reader.read(buffer, 0, buffer.length);
             }
-            
+
             writer.close();
             reader.close();
         }
@@ -557,17 +580,17 @@ class AttachmentInfo
         this.attachmentLink = attachmentLink;
         this.attachmentName = attachmentName;
     }
-    
+
     public String GetAttachmentLink()
     {
         return this.attachmentLink;
     }
-    
+
     public String GetAttachmentName()
     {
         return this.attachmentName;
     }
-    
+
     private String attachmentLink;
     private String attachmentName;
 }
