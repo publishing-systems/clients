@@ -47,12 +47,12 @@ public class setup1
                          "License 3 or any later version for details. Also, see the source code\n" +
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "or the project website http://www.publishing-systems.org.\n\n");
-    
+
         String programPath = setup1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
 
         CopyEntitiesXHTML_1_0_Transitional(programPath, ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "xsltransformator" + File.separator + "xsltransformator1" + File.separator + "entities");
-    
+
         return;
     }
 
@@ -63,7 +63,7 @@ public class setup1
         {
             programPath += "/";
         }
-        
+
         if (to.startsWith("/") == true)
         {
             to = to.substring(0, new String("/").length());
@@ -72,7 +72,7 @@ public class setup1
         {
             to = to.substring(0, new String("\\").length());
         }
-        
+
         if (to.endsWith("/") != true &&
             to.endsWith("\\") != true)
         {
@@ -96,20 +96,20 @@ public class setup1
             System.out.println("setup1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
             return -1;
         }
-        
+
         if (from.isFile() != true)
         {
             System.out.println("setup1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
             return -2;
         }
-        
+
         if (from.canRead() != true)
         {
             System.out.println("setup1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
             return -3;
         }
-    
-    
+
+
         byte[] buffer = new byte[1024];
 
         try
@@ -118,15 +118,15 @@ public class setup1
 
             FileInputStream reader = new FileInputStream(from);
             FileOutputStream writer = new FileOutputStream(to);
-            
+
             int bytesRead = reader.read(buffer, 0, buffer.length);
-            
+
             while (bytesRead > 0)
             {
                 writer.write(buffer, 0, bytesRead);
                 bytesRead = reader.read(buffer, 0, buffer.length);
             }
-            
+
             writer.close();
             reader.close();
         }

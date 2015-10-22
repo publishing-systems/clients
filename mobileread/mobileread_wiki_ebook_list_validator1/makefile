@@ -16,18 +16,19 @@
 
 
 
-directories = ./mobileread_wiki_ebook_list_downloader1 ./mobileread_wiki_ebook_list_validator1
+.PHONY: all mobileread_wiki_ebook_list_validator1 clean
 
 
 
-.PHONY: all $(directories)
+all: mobileread_wiki_ebook_list_validator1
+mobileread_wiki_ebook_list_validator1: mobileread_wiki_ebook_list_validator1.class
 
 
 
-all: $(directories)
+mobileread_wiki_ebook_list_validator1.class: mobileread_wiki_ebook_list_validator1.java
+	javac mobileread_wiki_ebook_list_validator1.java
 
-
-
-$(directories):
-	$(MAKE) --directory=$@
-
+clean:
+	rm -f mobileread_wiki_ebook_list_validator1.class
+	rm -f AttachmentInfo.class
+	rm -f UserLinks.class
