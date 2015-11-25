@@ -54,7 +54,7 @@ public class mobileread_wiki_ebook_list_validator1
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source code\n" +
-                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "repository https://github.com/publishing-systems/clients/\n" +
                          "and the project website http://www.publishing-systems.org.\n\n");
 
         String programPath = mobileread_wiki_ebook_list_validator1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
@@ -286,7 +286,7 @@ public class mobileread_wiki_ebook_list_validator1
         }
 
         if (mobileread_wiki_ebook_list_validator1.CopyFileBinary(new File(programPath + "xsltransformator1_entities_config_xhtml1-transitional.xml"),
-                                                                  new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "xsltransformator" + File.separator + "xsltransformator1" + File.separator + "entities" + File.separator + "config.xml")) != 0)
+                                                                 new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "xsltransformator" + File.separator + "xsltransformator1" + File.separator + "entities" + File.separator + "config.xml")) != 0)
         {
             System.exit(-1);
         }
@@ -617,6 +617,7 @@ public class mobileread_wiki_ebook_list_validator1
                                     "UTF8"));
 
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            writer.write("<!-- This file was created by mobileread_wiki_ebook_list_validator1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
             writer.write("<downloads>\n");
 
             for (int i = 0; i < attachmentLinks.size(); i++)
@@ -657,6 +658,7 @@ public class mobileread_wiki_ebook_list_validator1
                 attachmentDisplayName = attachmentDisplayName.replaceAll(">", "&gt;");
 
                 writer2.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+                writer2.write("<!-- This file was created by mobileread_wiki_ebook_list_validator1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
                 writer2.write("<epubcheck1-recursive-checker1-job>\n");
                 writer2.write("  <in>\n");
                 writer2.write("    <input path=\"" + outDirectory.getAbsolutePath() + File.separator + attachmentDisplayName + "\" recursive=\"false\"/>\n");
@@ -856,12 +858,56 @@ public class mobileread_wiki_ebook_list_validator1
         }
 
         if (mobileread_wiki_ebook_list_validator1.CopyFileBinary(new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "xsltransformator" + File.separator + "xsltransformator1" + File.separator + "entities" + File.separator + "config_empty.xml"),
-                                                                  new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "xsltransformator" + File.separator + "xsltransformator1" + File.separator + "entities" + File.separator + "config.xml")) != 0)
+                                                                 new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "xsltransformator" + File.separator + "xsltransformator1" + File.separator + "entities" + File.separator + "config.xml")) != 0)
         {
             System.exit(-1);
         }
 
         builder = new ProcessBuilder("java", "xsltransformator1", outDirectory.getAbsolutePath() + File.separator + "downloads.xml", programPath + "transform_result.xsl", outDirectory.getAbsolutePath() + File.separator + "check_result.xhtml");
+        builder.directory(new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "xsltransformator" + File.separator + "xsltransformator1"));
+        builder.redirectErrorStream(true);
+
+        try
+        {
+            Process process = builder.start();
+            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+
+            while (scanner.hasNext() == true)
+            {
+                System.out.println(scanner.next());
+            }
+
+            scanner.close();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
+        builder = new ProcessBuilder("java", "mobileread_wiki_ebook_list_validation_uploader_statistics1", outDirectory.getAbsolutePath() + File.separator + "downloads.xml", outDirectory.getAbsolutePath() + File.separator + "uploader_statistics.xml");
+        builder.directory(new File(programPath));
+        builder.redirectErrorStream(true);
+
+        try
+        {
+            Process process = builder.start();
+            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+
+            while (scanner.hasNext() == true)
+            {
+                System.out.println(scanner.next());
+            }
+
+            scanner.close();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
+        builder = new ProcessBuilder("java", "xsltransformator1", outDirectory.getAbsolutePath() + File.separator + "uploader_statistics.xml", programPath + "transform_uploader_statistics.xsl", outDirectory.getAbsolutePath() + File.separator + "uploader_statistics.xhtml");
         builder.directory(new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "xsltransformator" + File.separator + "xsltransformator1"));
         builder.redirectErrorStream(true);
 

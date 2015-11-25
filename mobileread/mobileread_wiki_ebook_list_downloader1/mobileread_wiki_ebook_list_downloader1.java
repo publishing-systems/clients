@@ -51,7 +51,7 @@ public class mobileread_wiki_ebook_list_downloader1
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source code\n" +
-                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "repository https://github.com/publishing-systems/clients/\n" +
                          "and the project website http://www.publishing-systems.org.\n\n");
 
         String programPath = mobileread_wiki_ebook_list_downloader1.class.getProtectionDomain().getCodeSource().getLocation().getFile();

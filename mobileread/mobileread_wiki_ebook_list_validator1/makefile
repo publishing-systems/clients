@@ -16,19 +16,35 @@
 
 
 
-.PHONY: all mobileread_wiki_ebook_list_validator1 clean
+.PHONY: all mobileread_wiki_ebook_list_validator1 mobileread_wiki_ebook_list_validation_uploader_statistics1 clean
 
 
 
-all: mobileread_wiki_ebook_list_validator1
+all: mobileread_wiki_ebook_list_validator1 mobileread_wiki_ebook_list_validation_uploader_statistics1
+mobileread_wiki_ebook_list_validation_uploader_statistics1: mobileread_wiki_ebook_list_validation_uploader_statistics1.class
 mobileread_wiki_ebook_list_validator1: mobileread_wiki_ebook_list_validator1.class
 
 
 
-mobileread_wiki_ebook_list_validator1.class: mobileread_wiki_ebook_list_validator1.java
+ValidationUploaderStatistics.class: ValidationUploaderStatistics.java
+	javac ValidationUploaderStatistics.java
+
+mobileread_wiki_ebook_list_validation_uploader_statistics1.class: mobileread_wiki_ebook_list_validation_uploader_statistics1.java ValidationUploaderStatistics.class
+	javac mobileread_wiki_ebook_list_validation_uploader_statistics1.java
+
+UserLinks.class: UserLinks.java
+	javac UserLinks.java
+
+AttachmentInfo.class: AttachmentInfo.java
+	javac AttachmentInfo.java
+
+mobileread_wiki_ebook_list_validator1.class: mobileread_wiki_ebook_list_validator1.java AttachmentInfo.class UserLinks.class mobileread_wiki_ebook_list_validation_uploader_statistics1
 	javac mobileread_wiki_ebook_list_validator1.java
 
 clean:
 	rm -f mobileread_wiki_ebook_list_validator1.class
+	rm -f ValidationUploaderStatistics.class
 	rm -f AttachmentInfo.class
 	rm -f UserLinks.class
+	rm -f mobileread_wiki_ebook_list_validation_uploader_statistics1.class
+
