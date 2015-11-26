@@ -688,7 +688,7 @@ public class mobileread_wiki_ebook_list_validator1
 
                 DeleteFileRecursively(new File(epubcheckResultDirectory.getAbsolutePath() + File.separator + "result_1.log"));
 
-                builder = new ProcessBuilder("java", "epubcheck1_recursive_checker1", tempDirectory.getAbsolutePath() + File.separator + "epubcheck_jobfile_" + i + ".xml", epubcheckResultDirectory.getAbsolutePath());
+                builder = new ProcessBuilder("java", "-Duser.country=DE", "-Duser.language=de", "epubcheck1_recursive_checker1", tempDirectory.getAbsolutePath() + File.separator + "epubcheck_jobfile_" + i + ".xml", epubcheckResultDirectory.getAbsolutePath());
                 builder.directory(new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "epubcheck" + File.separator + "epubcheck1" + File.separator + "workflows"));
                 builder.redirectErrorStream(true);
 
