@@ -45,7 +45,7 @@ public class setup1
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source code\n" +
-                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "repository https://github.com/publishing-systems/clients/\n" +
                          "or the project website http://www.publishing-systems.org.\n\n");
 
         String programPath = setup1.class.getProtectionDomain().getCodeSource().getLocation().getFile();

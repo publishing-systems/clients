@@ -36,6 +36,11 @@ along with mobileread_wiki_ebook_list_validator1. If not, see <http://www.gnu.or
               color: red;
           }
 
+          .warning
+          {
+              color: red;
+          }
+
           .valid
           {
               color: green;
@@ -55,6 +60,13 @@ along with mobileread_wiki_ebook_list_validator1. If not, see <http://www.gnu.or
                 <th>Bilanz</th>
               </tr>
               <xsl:apply-templates/>
+              <tr>
+                <td>Summe</td>
+                <td><span class="error"><xsl:value-of select="//sum/@errors"/></span></td>
+                <td><span class="warning"><xsl:value-of select="//sum/@warnings"/></span></td>
+                <td><span class="valid"><xsl:value-of select="//sum/@valids"/></span></td>
+                <td></td>
+              </tr>
             </table>
             <p>
               <a href="uploader_statistics.xml">Quelle</a>, <a href="transform_uploader_statistics.xsl">Stylesheet</a>.
@@ -98,7 +110,7 @@ along with mobileread_wiki_ebook_list_validator1. If not, see <http://www.gnu.or
       <td>
         <xsl:choose>
           <xsl:when test="@warnings > 0">
-            <span class="error">
+            <span class="warning">
               <xsl:value-of select="./@warnings"/>
             </span>
           </xsl:when>

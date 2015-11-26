@@ -237,23 +237,23 @@ public class mobileread_wiki_ebook_list_validation_uploader_statistics1
                 int lhsValids = lhs.getValids();
                 int rhsValids = rhs.getValids();
                 
-                if (lhs.getErrors() + lhs.getWarnings() < rhs.getErrors() + rhs.getWarnings())
+                if (lhsErrors < rhsErrors)
                 {
                     return -1;
                 }
-                else if (lhs.getErrors() + lhs.getWarnings() > rhs.getErrors() + rhs.getWarnings())
+                else if (lhsErrors > rhsErrors)
                 {
                     return 1;
                 }
                 else
                 {
-                    if ((lhs.getErrors() + lhs.getWarnings()) == 0 && (rhs.getErrors() + rhs.getWarnings()) == 0)
+                    if (lhsErrors == 0 && rhsErrors == 0)
                     {
-                        if (lhs.getValids() < rhs.getValids())
+                        if (lhsValids < rhsValids)
                         {
                             return 1;
                         }
-                        else if (lhs.getValids() > rhs.getValids())
+                        else if (lhsValids > rhsValids)
                         {
                             return -1;
                         }
@@ -269,6 +269,17 @@ public class mobileread_wiki_ebook_list_validation_uploader_statistics1
                 }
             }
         });
+
+        int errorsTotal = 0;
+        int warningsTotal = 0;
+        int validsTotal = 0;
+
+        for (ValidationUploaderStatistics uploader : sortedStatistics)
+        {
+            errorsTotal += uploader.getErrors();
+            warningsTotal += uploader.getWarnings();
+            validsTotal += uploader.getValids();
+        }
 
         try
         {
@@ -310,9 +321,11 @@ public class mobileread_wiki_ebook_list_validation_uploader_statistics1
 
                     writer.write(" user_url=\"" + complainLink + "\"");
                 }
-                
+
                 writer.write("/>\n");
             }
+
+            writer.write("  <sum errors=\"" + errorsTotal + "\" warnings=\"" + warningsTotal + "\" valids=\"" + validsTotal + "\"/>\n");
 
             writer.write("</validation-uploader-statistics>\n");
             writer.flush();
