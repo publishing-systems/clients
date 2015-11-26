@@ -166,9 +166,10 @@ public class mobileread_wiki_ebook_list_validation_uploader_statistics1
                             statistics.put(userAttribute.getValue(), uploaderStatistics);
                         }
 
-                        switch (resultAttribute.getValue())
+                        String result = resultAttribute.getValue();
+
+                        if (result.equals("error") == true)
                         {
-                        case "error":
                             uploaderStatistics.incrementErrors();
                             
                             if (uploaderStatistics.getLinkComplain() == null)
@@ -182,9 +183,9 @@ public class mobileread_wiki_ebook_list_validation_uploader_statistics1
                                     System.out.println("mobileread_wiki_ebook_list_validation_uploader_statistics1: Attribute 'user_link' of entry #" + downloadEntryNumber + " with value '" + userLinkAttribute.getValue() + "' differs from the previously encountered link '" + uploaderStatistics.getLinkComplain() + "' for user '" + uploaderStatistics.getUploader() + "'.");
                                 }
                             }
-
-                            break;
-                        case "warning":
+                        }
+                        else if (result.equals("warning") == true)
+                        {
                             uploaderStatistics.incrementWarnings();
 
                             if (uploaderStatistics.getLinkComplain() == null)
@@ -198,14 +199,14 @@ public class mobileread_wiki_ebook_list_validation_uploader_statistics1
                                     System.out.println("mobileread_wiki_ebook_list_validation_uploader_statistics1: Attribute 'user_link' of entry #" + downloadEntryNumber + " with value '" + userLinkAttribute.getValue() + "' differs from the previously encountered link '" + uploaderStatistics.getLinkComplain() + "' for user '" + uploaderStatistics.getUploader() + "'.");
                                 }
                             }
-
-                            break;
-                        case "valid":
+                        }
+                        else if (result.equals("valid") == true)
+                        {
                             uploaderStatistics.incrementValids();
-                            break;
-                        default:
+                        }
+                        else
+                        {
                             System.out.println("mobileread_wiki_ebook_list_validation_uploader_statistics1: Attribute 'result' of entry #" + downloadEntryNumber + " contains the unrecognized value '" + resultAttribute.getValue() + "'.");
-                            break;
                         }
                     }
                 }
