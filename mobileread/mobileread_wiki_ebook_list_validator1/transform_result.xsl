@@ -56,7 +56,7 @@ along with mobileread_wiki_ebook_list_validator1. If not, see <http://www.gnu.or
         <div>
           <h2>Gültigkeit der deutschen EPUBs</h2>
           <p>
-            Zur <a href="uploader_statistics.xhtml">Ruhmeshalle</a>.
+            Zur <a href="uploader_statistics.xhtml">Bestenliste</a>.
           </p>
           <div>
             <table>

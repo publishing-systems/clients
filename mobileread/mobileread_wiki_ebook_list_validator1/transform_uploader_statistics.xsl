@@ -49,7 +49,7 @@ along with mobileread_wiki_ebook_list_validator1. If not, see <http://www.gnu.or
       </head>
       <body>
         <div>
-          <h2>Ruhmeshalle</h2>
+          <h2>Bestenliste</h2>
           <div>
             <table>
               <tr>

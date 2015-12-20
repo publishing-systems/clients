@@ -42,6 +42,8 @@ import java.io.FileOutputStream;
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -57,13 +59,29 @@ public class mobileread_wiki_ebook_list_validator1
                          "repository https://github.com/publishing-systems/clients/\n" +
                          "and the project website http://www.publishing-systems.org.\n\n");
 
-        String programPath = mobileread_wiki_ebook_list_validator1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-
         if (args.length < 2)
         {
             System.out.print("Usage:\n" +
                              "\tmobileread_wiki_ebook_list_validator1 mobileread-wiki-ebook-list-url out-directory\n\n");
             System.exit(1);
+        }
+
+        String programPath = mobileread_wiki_ebook_list_validator1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
 
         File outDirectory = new File(args[1]);
@@ -81,6 +99,42 @@ public class mobileread_wiki_ebook_list_validator1
             if (outDirectory.isFile() == true)
             {
                 System.out.print("mobileread_wiki_ebook_list_validator1: Output path '" + outDirectory.getAbsolutePath() + "' already exists, but is a file instead of a directory.\n");
+                System.exit(-1);
+            }
+        }
+
+        File outInvalidDirectory = null;
+
+        try
+        {
+            String outInvalidDirectoryPath = outDirectory.getCanonicalPath() + File.separator + "invalid";
+            outInvalidDirectoryPath = URLDecoder.decode(outInvalidDirectoryPath, "UTF-8");
+            outInvalidDirectory = new File(outInvalidDirectoryPath);
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
+        if (outInvalidDirectory.exists() != true)
+        {
+            if (outInvalidDirectory.mkdirs() != true)
+            {
+                System.out.println("mobileread_wiki_ebook_list_validator1: Can't create output directory for invalid files '" + outInvalidDirectory.getAbsolutePath() + "'.");
+                System.exit(-1);
+            }
+        }
+        else
+        {
+            if (outInvalidDirectory.isFile() == true)
+            {
+                System.out.print("mobileread_wiki_ebook_list_validator1: Output path for invalid files '" + outInvalidDirectory.getAbsolutePath() + "' already exists, but is a file instead of a directory.\n");
                 System.exit(-1);
             }
         }
@@ -831,6 +885,12 @@ public class mobileread_wiki_ebook_list_validator1
                     }
                 }
 
+                if (valid != true)
+                {
+                    mobileread_wiki_ebook_list_validator1.CopyFileBinary(new File(outDirectory.getAbsolutePath() + File.separator + attachmentDisplayName), new File(outInvalidDirectory.getAbsolutePath() + File.separator + attachmentDisplayName));
+                    DeleteFileRecursively(new File(outDirectory.getAbsolutePath() + File.separator + attachmentDisplayName));
+                }
+
                 try
                 {
                     Thread.sleep(5000);
@@ -983,15 +1043,15 @@ public class mobileread_wiki_ebook_list_validator1
 
             FileInputStream reader = new FileInputStream(from);
             FileOutputStream writer = new FileOutputStream(to);
-            
+
             int bytesRead = reader.read(buffer, 0, buffer.length);
-            
+
             while (bytesRead > 0)
             {
                 writer.write(buffer, 0, bytesRead);
                 bytesRead = reader.read(buffer, 0, buffer.length);
             }
-            
+
             writer.close();
             reader.close();
         }
