@@ -31,14 +31,14 @@ along with mobileread_wiki_ebook_list_validator1. If not, see <http://www.gnu.or
       <xsl:attribute name="name">
         <xsl:value-of select="./text()"/>
       </xsl:attribute>
-      <xsl:text>http://www.mobileread.com/forums/</xsl:text>
+      <xsl:text>https://www.mobileread.com/forums/</xsl:text>
       <xsl:value-of select="./@href"/>
     </link>
   </xsl:template>
 
   <xsl:template match="/xhtml:html/xhtml:body/xhtml:div[@id='container']/xhtml:div[@id='posts']/xhtml:div/xhtml:div/xhtml:div/xhtml:div/xhtml:table/xhtml:tr/xhtml:td/xhtml:div/xhtml:a">
     <xsl:variable name="attachmentlink" select="@href"/>
-    <xsl:if test="starts-with($attachmentlink, 'http://www.mobileread.com/forums/attachment.php?')">
+    <xsl:if test="starts-with($attachmentlink, 'https://www.mobileread.com/forums/attachment.php?')">
       <link>
         <xsl:attribute name="name">
           <xsl:value-of select="./text()"/>

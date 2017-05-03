@@ -1,4 +1,4 @@
 Call
 
-    java mobileread_wiki_ebook_list_validator1 http://wiki.mobileread.com/wiki/Free_eBooks-de/de out no-utf8
+    java mobileread_wiki_ebook_list_validator1 https://wiki.mobileread.com/wiki/Free_eBooks-de/de out no-utf8
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2017  Stephan Kreutzer
+
+This file is part of mobileread_wiki_ebook_list_validator1.
+
+mobileread_wiki_ebook_list_validator1 is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 or any later version,
+as published by the Free Software Foundation.
+
+mobileread_wiki_ebook_list_validator1 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with mobileread_wiki_ebook_list_validator1. If not, see <http://www.gnu.org/licenses/>.
+-->
+<txtreplace1-replacement-dictionary>
+  <replace>
+    <pattern>&lt;script</pattern>
+    <replacement>&lt;?js &lt;script</replacement>
+  </replace>
+  <replace>
+    <pattern>&lt;/script&gt;</pattern>
+    <replacement>&lt;/script&gt; ?&gt;</replacement>
+  </replace>
+  <replace>
+    <pattern>http://www.mobileread.com/forums/showthread.php</pattern>
+    <replacement>https://www.mobileread.com/forums/showthread.php</replacement>
+  </replace>
+  <replace>
+    <!-- Malformed spoiler button. -->
+    <pattern>&lt;input type="button" value="Show" style="width:45px;font-size:10px;margin:0px;padding:0px;" onClick="if ( this.parentNode.getElementsByTagName('div')[0].style.display != '' ) {this.parentNode.getElementsByTagName('div')[0].style.display = '';this.innerText = '';this.value = 'Hide';} else {this.parentNode.getElementsByTagName('div')[0].style.display = 'none';this.innerText = '';this.value = 'Show';}"&gt;</pattern>
+    <replacement>&lt;input type="button" value="Show" style="width:45px;font-size:10px;margin:0px;padding:0px;" onClick="if ( this.parentNode.getElementsByTagName('div')[0].style.display != '' ) {this.parentNode.getElementsByTagName('div')[0].style.display = '';this.innerText = '';this.value = 'Hide';} else {this.parentNode.getElementsByTagName('div')[0].style.display = 'none';this.innerText = '';this.value = 'Show';}" /&gt;</replacement>
+  </replace>
+  <replace>
+    <pattern>http://www.mobileread.com/forums/attachment.php</pattern>
+    <replacement>https://www.mobileread.com/forums/attachment.php</replacement>
+  </replace>
+</txtreplace1-replacement-dictionary>

@@ -1,4 +1,4 @@
-/* Copyright (C) 2015  Stephan Kreutzer
+/* Copyright (C) 2015-2017 Stephan Kreutzer
  *
  * This file is part of mobileread_wiki_ebook_list_downloader1.
  *
@@ -7,12 +7,12 @@
  * as published by the Free Software Foundation.
  *
  * mobileread_wiki_ebook_list_downloader1 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; replacementout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License 3 for more details.
  *
  * You should have received a copy of the GNU Affero General Public License 3
- * along replacement mobileread_wiki_ebook_list_downloader1. If not, see <http://www.gnu.org/licenses/>.
+ * along with mobileread_wiki_ebook_list_downloader1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * @file $/mobileread_wiki_ebook_list_downloader1.java
@@ -46,7 +46,7 @@ public class mobileread_wiki_ebook_list_downloader1
 {
     public static void main(String args[])
     {
-        System.out.print("mobileread_wiki_ebook_list_downloader1  Copyright (C) 2015  Stephan Kreutzer\n" +
+        System.out.print("mobileread_wiki_ebook_list_downloader1 Copyright (C) 2015-2017 Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -112,7 +112,7 @@ public class mobileread_wiki_ebook_list_downloader1
             {
                 System.out.println(scanner.next());
             }
-            
+
             scanner.close();
         }
         catch (IOException ex)
@@ -122,7 +122,7 @@ public class mobileread_wiki_ebook_list_downloader1
         }
 
         File wikiEbookList = new File(tempDirectory.getAbsolutePath() + File.separator + "list.xhtml");
-        
+
         if (wikiEbookList.exists() != true)
         {
             System.out.print("mobileread_wiki_ebook_list_downloader1: '" + wikiEbookList.getAbsolutePath() + "' doesn't exist, but should by now.\n");
@@ -147,6 +147,28 @@ public class mobileread_wiki_ebook_list_downloader1
             System.exit(-1);
         }
 
+        builder = new ProcessBuilder("java", "txtreplace1", wikiEbookList.getAbsolutePath(), programPath + File.separator + "mobileread_wiki_ebook_list_replacement_dictionary.xml", wikiEbookList.getAbsolutePath());
+        builder.directory(new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "txtreplace" + File.separator + "txtreplace1"));
+        builder.redirectErrorStream(true);
+
+        try
+        {
+            Process process = builder.start();
+            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+
+            while (scanner.hasNext() == true)
+            {
+                System.out.println(scanner.next());
+            }
+
+            scanner.close();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
         builder = new ProcessBuilder("java", "xsltransformator1", wikiEbookList.getAbsolutePath(), programPath + "mobileread_wiki_ebook_list.xsl", tempDirectory.getAbsolutePath() + File.separator + "list.xml");
         builder.directory(new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "xsltransformator" + File.separator + "xsltransformator1"));
         builder.redirectErrorStream(true);
@@ -160,7 +182,7 @@ public class mobileread_wiki_ebook_list_downloader1
             {
                 System.out.println(scanner.next());
             }
-            
+
             scanner.close();
         }
         catch (IOException ex)
@@ -195,7 +217,7 @@ public class mobileread_wiki_ebook_list_downloader1
                     {
                         linkEntryCount++;
                         event = eventReader.nextEvent();
-                        
+
                         if (event.isCharacters() == true)
                         {
                             threadLinks.add(event.asCharacters().getData());
@@ -204,7 +226,14 @@ public class mobileread_wiki_ebook_list_downloader1
                         {
                             System.out.print("mobileread_wiki_ebook_list_downloader1: Link entry #" + linkEntryCount + " in '" + wikiEbookList.getAbsolutePath() + "' doesn't contain characters.\n");
                             System.exit(-1);
-                        }    
+                        }
+
+                        /* For debugging.
+                        if (linkEntryCount >= 7)
+                        {
+                            break;
+                        }
+                        */
                     }
                 }
             }
@@ -241,7 +270,7 @@ public class mobileread_wiki_ebook_list_downloader1
                 {
                     System.out.println(scanner.next());
                 }
-                
+
                 scanner.close();
             }
             catch (IOException ex)
@@ -251,7 +280,7 @@ public class mobileread_wiki_ebook_list_downloader1
             }
 
             File threadPage = new File(tempDirectory.getAbsolutePath() + File.separator + i + ".xhtml");
-            
+
             if (threadPage.exists() != true)
             {
                 System.out.print("mobileread_wiki_ebook_list_downloader1: '" + threadPage.getAbsolutePath() + "' as a result of downloading '" + threadLinks.get(i) + "' doesn't exist, but should by now.\n");
@@ -304,7 +333,29 @@ public class mobileread_wiki_ebook_list_downloader1
                 {
                     System.out.println(scanner.next());
                 }
-                
+
+                scanner.close();
+            }
+            catch (IOException ex)
+            {
+                ex.printStackTrace();
+                System.exit(-1);
+            }
+
+            builder = new ProcessBuilder("java", "txtreplace1", threadPage.getAbsolutePath(), programPath + File.separator + "mobileread_wiki_ebook_list_replacement_dictionary.xml", threadPage.getAbsolutePath());
+            builder.directory(new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "txtreplace" + File.separator + "txtreplace1"));
+            builder.redirectErrorStream(true);
+
+            try
+            {
+                Process process = builder.start();
+                Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+
+                while (scanner.hasNext() == true)
+                {
+                    System.out.println(scanner.next());
+                }
+
                 scanner.close();
             }
             catch (IOException ex)
@@ -326,7 +377,7 @@ public class mobileread_wiki_ebook_list_downloader1
                 {
                     System.out.println(scanner.next());
                 }
-                
+
                 scanner.close();
             }
             catch (IOException ex)
@@ -459,7 +510,7 @@ public class mobileread_wiki_ebook_list_downloader1
 
         for (int i = 0; i < attachmentLinks.size(); i++)
         {
-            builder = new ProcessBuilder("java", "downloader1", "http://www.mobileread.com/forums/" + attachmentLinks.get(i).GetAttachmentLink(), outDirectory.getAbsolutePath() + File.separator + attachmentLinks.get(i).GetAttachmentName());
+            builder = new ProcessBuilder("java", "downloader1", "https://www.mobileread.com/forums/" + attachmentLinks.get(i).GetAttachmentLink(), outDirectory.getAbsolutePath() + File.separator + attachmentLinks.get(i).GetAttachmentName());
             builder.directory(new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "downloader" + File.separator + "downloader1"));
             builder.redirectErrorStream(true);
 

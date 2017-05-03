@@ -1,4 +1,4 @@
-/* Copyright (C) 2015  Stephan Kreutzer
+/* Copyright (C) 2015-2017 Stephan Kreutzer
  *
  * This file is part of mobileread_wiki_ebook_list_validator1.
  *
@@ -7,12 +7,12 @@
  * as published by the Free Software Foundation.
  *
  * mobileread_wiki_ebook_list_validator1 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; replacementout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License 3 for more details.
-    *
+ *
  * You should have received a copy of the GNU Affero General Public License 3
- * along replacement mobileread_wiki_ebook_list_validator1. If not, see <http://www.gnu.org/licenses/>.
+ * along with mobileread_wiki_ebook_list_validator1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * @file $/mobileread_wiki_ebook_list_validator1.java
@@ -51,7 +51,7 @@ public class mobileread_wiki_ebook_list_validator1
 {
     public static void main(String args[])
     {
-        System.out.print("mobileread_wiki_ebook_list_validator1  Copyright (C) 2015  Stephan Kreutzer\n" +
+        System.out.print("mobileread_wiki_ebook_list_validator1 Copyright (C) 2015-2017 Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -204,6 +204,28 @@ public class mobileread_wiki_ebook_list_validator1
             System.exit(-1);
         }
 
+        builder = new ProcessBuilder("java", "txtreplace1", wikiEbookList.getAbsolutePath(), programPath + File.separator + "mobileread_wiki_ebook_list_replacement_dictionary.xml", wikiEbookList.getAbsolutePath());
+        builder.directory(new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "txtreplace" + File.separator + "txtreplace1"));
+        builder.redirectErrorStream(true);
+
+        try
+        {
+            Process process = builder.start();
+            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+
+            while (scanner.hasNext() == true)
+            {
+                System.out.println(scanner.next());
+            }
+
+            scanner.close();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
         builder = new ProcessBuilder("java", "xsltransformator1", wikiEbookList.getAbsolutePath(), programPath + "mobileread_wiki_ebook_list.xsl", tempDirectory.getAbsolutePath() + File.separator + "list.xml");
         builder.directory(new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "xsltransformator" + File.separator + "xsltransformator1"));
         builder.redirectErrorStream(true);
@@ -263,6 +285,13 @@ public class mobileread_wiki_ebook_list_validator1
                             System.out.print("mobileread_wiki_ebook_list_validator1: Link entry #" + linkEntryCount + " in '" + wikiEbookList.getAbsolutePath() + "' doesn't contain characters.\n");
                             System.exit(-1);
                         }
+
+                        /* For debugging.
+                        if (linkEntryCount >= 7)
+                        {
+                            break;
+                        }
+                        */
                     }
                 }
             }
@@ -351,6 +380,28 @@ public class mobileread_wiki_ebook_list_validator1
 
             builder = new ProcessBuilder("java", "xml_fix_special_characters_escaping1", threadPage.getAbsolutePath(), threadPage.getAbsolutePath());
             builder.directory(new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "xml_fix_special_characters_escaping" + File.separator + "xml_fix_special_characters_escaping1"));
+            builder.redirectErrorStream(true);
+
+            try
+            {
+                Process process = builder.start();
+                Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+
+                while (scanner.hasNext() == true)
+                {
+                    System.out.println(scanner.next());
+                }
+
+                scanner.close();
+            }
+            catch (IOException ex)
+            {
+                ex.printStackTrace();
+                System.exit(-1);
+            }
+
+            builder = new ProcessBuilder("java", "txtreplace1", threadPage.getAbsolutePath(), programPath + File.separator + "mobileread_wiki_ebook_list_replacement_dictionary.xml", threadPage.getAbsolutePath());
+            builder.directory(new File(programPath + ".." + File.separator + ".." + File.separator + ".." + File.separator + "automated_digital_publishing" + File.separator + "txtreplace" + File.separator + "txtreplace1"));
             builder.redirectErrorStream(true);
 
             try
@@ -463,7 +514,7 @@ public class mobileread_wiki_ebook_list_validator1
 
                             if (!linkAttribute.isEmpty())
                             {
-                                userBlameLink = "http://www.mobileread.com/forums/" + linkAttribute;
+                                userBlameLink = "https://www.mobileread.com/forums/" + linkAttribute;
 
                                 int posParameterList = linkAttribute.indexOf('?');
 
@@ -488,7 +539,7 @@ public class mobileread_wiki_ebook_list_validator1
                                             {
                                                 if (keyValuePair[0].equalsIgnoreCase("u") == true)
                                                 {
-                                                    userBlameLink = "http://www.mobileread.com/forums/private.php?do=newpm&u=" + keyValuePair[1];
+                                                    userBlameLink = "https://www.mobileread.com/forums/private.php?do=newpm&u=" + keyValuePair[1];
                                                     break;
                                                 }
                                             }
@@ -520,7 +571,7 @@ public class mobileread_wiki_ebook_list_validator1
 
                                     if (isNumeric == true)
                                     {
-                                        userReputationLink = "http://www.mobileread.com/forums/reputation.php?p=" + keyValuePair[1];
+                                        userReputationLink = "https://www.mobileread.com/forums/reputation.php?p=" + keyValuePair[1];
                                     }
                                 }
                             }
