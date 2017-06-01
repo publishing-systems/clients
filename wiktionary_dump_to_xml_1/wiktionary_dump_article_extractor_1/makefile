@@ -26,16 +26,16 @@ wiktionary_dump_article_extractor_1: wiktionary_dump_article_extractor_1.class
 
 
 
-ProgramTerminationException.class: ProgramTerminationException.java
-	javac -encoding UTF-8 ProgramTerminationException.java
-
 InfoMessage.class: InfoMessage.java
 	javac -encoding UTF-8 InfoMessage.java
 
-wiktionary_dump_article_extractor_1.class: wiktionary_dump_article_extractor_1.java InfoMessage.class ProgramTerminationException.class
+ProgramTerminationException.class: ProgramTerminationException.java
+	javac -encoding UTF-8 ProgramTerminationException.java
+
+wiktionary_dump_article_extractor_1.class: wiktionary_dump_article_extractor_1.java ProgramTerminationException.class InfoMessage.class
 	javac -encoding UTF-8 wiktionary_dump_article_extractor_1.java
 
 clean:
 	rm -f wiktionary_dump_article_extractor_1.class
-	rm -f InfoMessage.class
 	rm -f ProgramTerminationException.class
+	rm -f InfoMessage.class

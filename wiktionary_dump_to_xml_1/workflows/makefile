@@ -6,17 +6,17 @@
 # it under the terms of the GNU Affero General Public License version 3 or any later version,
 # as published by the Free Software Foundation.
 #
-# The wiktionary_dump_to_xml_1 package is distributed in the hope that it will be useful,
+# wiktionary_dump_to_xml_1 package is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License 3 for more details.
 #
 # You should have received a copy of the GNU Affero General Public License 3
-# along with the wiktionary_dump_to_xml_1 package. If not, see <http://www.gnu.org/licenses/>.
+# along with wiktionary_dump_to_xml_1 package. If not, see <http://www.gnu.org/licenses/>.
 
 
 
-directories = ./wiktionary_article_to_xml_1 ./wiktionary_dump_article_extractor_1 ./workflows
+directories = ./wiktionary_dump_to_xml_1
 
 
 

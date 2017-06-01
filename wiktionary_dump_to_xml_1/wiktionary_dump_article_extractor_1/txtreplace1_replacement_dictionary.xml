@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright (C) 2016-2017 Stephan Kreutzer
+Copyright (C) 2014-2017 Stephan Kreutzer
 
 This file is part of wiktionary_dump_article_extractor_1, a submodule of the
 wiktionary_dump_to_xml_1 package.
@@ -17,7 +17,17 @@ GNU Affero General Public License 3 for more details.
 You should have received a copy of the GNU Affero General Public License 3
 along with wiktionary_dump_article_extractor_1. If not, see <http://www.gnu.org/licenses/>.
 -->
-<wiktionary-dump-article-extractor-1-job>
-  <input-file path="./wiktionary-pages-articles.xml"/>
-  <output-directory path="./output"/>
-</wiktionary-dump-article-extractor-1-job>
+<txtreplace1-replacement-dictionary>
+  <replace>
+    <!--
+      You can't have escaped "&nbsp;" and unescaped "&" in the Wikitext at the same time!
+      Either it is XML escaped or it is not. Maybe the idea is that with nbsp (non-breaking
+      space) escaping in the Wikitext, the nbsp stays visible for the authors and the Mediawiki
+      renderer has some special replacement handling code for it. The export (dumpBackup.php?)
+      does not. Wikitext isn't XML or XHTML anyway, so XML/XHTML entities are not supposed to
+      occur.
+    -->
+    <pattern>&amp;nbsp;</pattern>
+    <replacement> </replacement>
+  </replace>
+</txtreplace1-replacement-dictionary>
