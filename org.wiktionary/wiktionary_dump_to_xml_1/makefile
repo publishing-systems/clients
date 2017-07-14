@@ -1,18 +1,19 @@
 # Copyright (C) 2016-2017  Stephan Kreutzer
 #
-# This file is part of the wiktionary_dump_to_xml_1 package.
+# This file is part of clients for the automated_digital_publishing
+# and digital_publishing_workflow_tools packages.
 #
-# The wiktionary_dump_to_xml_1 package is free software: you can redistribute it and/or modify
+# clients is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License version 3 or any later version,
 # as published by the Free Software Foundation.
 #
-# The wiktionary_dump_to_xml_1 package is distributed in the hope that it will be useful,
+# clients is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License 3 for more details.
 #
 # You should have received a copy of the GNU Affero General Public License 3
-# along with the wiktionary_dump_to_xml_1 package. If not, see <http://www.gnu.org/licenses/>.
+# along with clients. If not, see <http://www.gnu.org/licenses/>.
 
 
 

@@ -16,7 +16,7 @@
 
 
 
-directories = ./mobileread ./setup ./wiktionary_dump_to_xml_1
+directories = ./com.mobileread ./de.autorenwelt ./org.wiktionary ./setup
 
 
 

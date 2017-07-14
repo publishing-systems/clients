@@ -73,8 +73,8 @@ public class wiktionary_dump_article_extractor_1
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public License 3\n" +
                          "or any later version for details. Also, see the source code repository\n" +
-                         "https://github.com/refugee-it/clients/ and the project website\n" +
-                         "https://www.refugee-it.de.\n\n");
+                         "https://github.com/publishing-systems/clients/ and the project website\n" +
+                         "http://www.publishing-systems.org.\n\n");
 
         wiktionary_dump_article_extractor_1 extractor = new wiktionary_dump_article_extractor_1();
 
@@ -97,7 +97,7 @@ public class wiktionary_dump_article_extractor_1
                                         "UTF-8"));
 
                 writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-                writer.write("<!-- This file was created by wiktionary_dump_article_extractor_1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/refugee-it/clients/ and https://www.refugee-it.de). -->\n");
+                writer.write("<!-- This file was created by wiktionary_dump_article_extractor_1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
                 writer.write("<wiktionary-dump-article-extractor-1-result-information>\n");
                 writer.write("  <success>\n");
 
@@ -865,7 +865,7 @@ public class wiktionary_dump_article_extractor_1
                                         "UTF-8"));
 
                 writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-                writer.write("<!-- This file was created by wiktionary_dump_article_extractor_1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/refugee-it/clients/ and https://www.refugee-it.de). -->\n");
+                writer.write("<!-- This file was created by wiktionary_dump_article_extractor_1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
                 writer.write("<wiktionary-dump-article-extractor-1-result-information>\n");
 
                 if (normalTermination == false)

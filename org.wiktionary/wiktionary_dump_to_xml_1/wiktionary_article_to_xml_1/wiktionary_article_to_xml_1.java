@@ -84,8 +84,8 @@ public class wiktionary_article_to_xml_1
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public License 3\n" +
                          "or any later version for details. Also, see the source code repository\n" +
-                         "https://github.com/refugee-it/clients/ and the project website\n" +
-                         "https://www.refugee-it.de.\n\n");
+                         "https://github.com/publishing-systems/clients/ and the project website\n" +
+                         "http://www.publishing-systems.org.\n\n");
 
         wiktionary_article_to_xml_1 converter = new wiktionary_article_to_xml_1();
 
@@ -108,7 +108,7 @@ public class wiktionary_article_to_xml_1
                                         "UTF-8"));
 
                 writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-                writer.write("<!-- This file was created by wiktionary_article_to_xml_1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/refugee-it/clients/ and https://www.refugee-it.de). -->\n");
+                writer.write("<!-- This file was created by wiktionary_article_to_xml_1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
                 writer.write("<wiktionary-article-to-xml-1-result-information>\n");
                 writer.write("  <success>\n");
 
@@ -1673,7 +1673,7 @@ public class wiktionary_article_to_xml_1
                 try
                 {
                     outputWriter.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-                    outputWriter.append("<!-- This file was created by wiktionary_article_to_xml_1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/refugee-it/clients/ and https://www.refugee-it.de). -->\n");
+                    outputWriter.append("<!-- This file was created by wiktionary_article_to_xml_1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
                     outputWriter.append("<wiktionary-article>");
                     outputWriter.append(sbOutput.toString());
                     outputWriter.append("</wiktionary-article>\n");
@@ -1819,7 +1819,7 @@ public class wiktionary_article_to_xml_1
                                         "UTF-8"));
 
                 writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-                writer.write("<!-- This file was created by wiktionary_article_to_xml_1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/refugee-it/clients/ and https://www.refugee-it.de). -->\n");
+                writer.write("<!-- This file was created by wiktionary_article_to_xml_1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
                 writer.write("<wiktionary-article-to-xml-1-result-information>\n");
 
                 if (normalTermination == false)
