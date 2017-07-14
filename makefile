@@ -1,4 +1,4 @@
-# Copyright (C) 2015  Stephan Kreutzer
+# Copyright (C) 2015-2017  Stephan Kreutzer
 #
 # This file is part of clients for automated_digital_publishing.
 #
@@ -16,7 +16,7 @@
 
 
 
-directories = ./mobileread ./setup
+directories = ./mobileread ./setup ./wiktionary_dump_to_xml_1
 
 
 
