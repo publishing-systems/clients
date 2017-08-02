@@ -123,13 +123,11 @@ public class ParserGerman
                     sbDefinitions.append(sbDefinition.toString());
                 }
             }
-            /*
             else if (token.equals("=="))
             {
                 this.tokenCursor -= 1;
                 break;
             }
-            */
         }
 
         if (sbDefinitions.length() > 0)
@@ -193,17 +191,39 @@ public class ParserGerman
                 return null;
             }
         }
-        /*
-        else if (token.equals("Übersetzungen"))
-        {
-            ++this.tokenCursor;
-        }
-        */
 
         if (match(" ") != true ||
             match("===") != true)
         {
             return null;
+        }
+
+        StringBuilder sbTranslations = new StringBuilder();
+
+        while (this.tokenCursor < this.tokens.size())
+        {
+            token = nextToken();
+
+            if (token.equals("===="))
+            {
+                StringBuilder sbTranslation = translations();
+
+                if (sbTranslation != null)
+                {
+                    sbTranslations.append(sbTranslation.toString());
+                }
+            }
+            else if (token.equals("==") == true ||
+                     token.equals("===") == true)
+            {
+                this.tokenCursor -= 1;
+                break;
+            }
+        }
+
+        if (sbTranslations.length() > 0)
+        {
+            sbResult.append(sbTranslations.toString());
         }
 
         sbResult.append("</definition>");
@@ -334,6 +354,191 @@ public class ParserGerman
 
         this.infoMessages.add(constructInfoMessage("messageParsingError", true, null, null, "m|f|n", token));
         return null;
+    }
+
+    public StringBuilder translations()
+    {
+        StringBuilder sbResult = new StringBuilder();
+
+        sbResult.append("<translations>");
+
+        if (match(" ") != true ||
+            match("{{") != true ||
+            match("Übersetzungen") != true ||
+            match("}}") != true ||
+            match(" ") != true ||
+            match("====") != true ||
+            match("\n") != true ||
+            match("{{") != true ||
+            match("Ü") != true ||
+            match("-") != true ||
+            match("Tabelle") != true ||
+            match("|") != true ||
+            match("Ü") != true ||
+            match("-") != true ||
+            match("links") != true ||
+            match("=") != true ||
+            match("\n") != true)
+        {
+            return null;
+        }
+
+        StringBuilder sbTranslations = new StringBuilder();
+
+        while (this.tokenCursor < this.tokens.size())
+        {
+            String token = nextToken();
+
+            if (token.equals("*"))
+            {
+                StringBuilder sbTranslation = translation();
+
+                if (sbTranslation != null)
+                {
+                    sbTranslations.append(sbTranslation.toString());
+                }
+            }
+            else if (token.equals("==") == true ||
+                     token.equals("===") == true ||
+                     token.equals("====") == true)
+            {
+                this.tokenCursor -= 1;
+                break;
+            }
+        }
+
+        if (sbTranslations.length() > 0)
+        {
+            sbResult.append(sbTranslations.toString());
+        }
+
+        sbResult.append("</translations>");
+
+        return sbResult;
+    }
+
+    public StringBuilder translation()
+    {
+        StringBuilder sbResult = new StringBuilder();
+
+        sbResult.append("<translation>");
+
+        if (match("{{") != true)
+        {
+            return null;
+        }
+
+        String language = nextToken();
+
+        if (language.equals("ar") == true)
+        {
+            sbResult.append("<language-code>" + language + "</language-code>");
+        }
+        else
+        {
+            this.infoMessages.add(constructInfoMessage("messageParsingError", true, null, null, "ar", language));
+            return null;
+        }
+
+        while (this.tokenCursor < this.tokens.size())
+        {
+            String token = nextToken();
+
+            if (token.equals("*") == true)
+            {
+                this.infoMessages.add(constructInfoMessage("messageParsingOfSequenceAborted", true, null, null, "translation", token));
+                return null;
+            }
+
+            if (token.equals("}}") != true)
+            {
+                // Ignore/consume.
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (match(":") != true)
+        {
+            return null;
+        }
+
+        while (this.tokenCursor < this.tokens.size())
+        {
+            String token = nextToken();
+
+            if (token.equals("*") == true)
+            {
+                this.infoMessages.add(constructInfoMessage("messageParsingOfSequenceAborted", true, null, null, "translation", token));
+                return null;
+            }
+
+            if (token.equals("[") != true)
+            {
+                // Ignore/consume.
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        nextToken();
+
+        if (match("]") != true ||
+            match(" ") != true ||
+            match("{{") != true ||
+            match("Üxx") != true ||
+            match("4") != true ||
+            match("|") != true ||
+            match("ar") != true ||
+            match("|") != true)
+        {
+            return null;
+        }
+
+        StringBuilder sbDisplay = new StringBuilder();
+
+        while (this.tokenCursor < this.tokens.size())
+        {
+            String token = nextToken();
+
+            if (token.equals("|") == true)
+            {
+                break;
+            }
+
+            sbDisplay.append(token);
+        }
+
+        sbResult.append("<display>" + sbDisplay.toString() + "</display>");
+
+        if (match("v") != true ||
+            match("=") != true)
+        {
+            return null;
+        }
+
+        StringBuilder sbVocalization = new StringBuilder();
+
+        while (this.tokenCursor < this.tokens.size())
+        {
+            String token = nextToken();
+
+            if (token.equals("|") == true)
+            {
+                break;
+            }
+
+            sbVocalization.append(token);
+        }
+
+        sbResult.append("<vocalization>" + sbVocalization.toString() + "</vocalization>");
+        sbResult.append("</translation>");
+
+        return sbResult;
     }
 
     public boolean match(String required)
