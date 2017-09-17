@@ -16,7 +16,7 @@
 
 
 
-directories = ./com.mobileread ./de.autorenwelt ./org.wiktionary ./setup
+directories = ./com.mobileread ./de.autorenwelt ./org.wiktionary ./setup ./tv.twitch
 
 
 
