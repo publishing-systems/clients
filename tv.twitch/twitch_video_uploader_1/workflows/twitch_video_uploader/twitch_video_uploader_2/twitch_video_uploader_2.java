@@ -436,7 +436,63 @@ public class twitch_video_uploader_2
                             throw constructTermination("messageInputFileIsntReadable", null, null, inputFile.getAbsolutePath(), jobFile.getAbsolutePath());
                         }
 
-                        instructions.add(new JobFileInstruction(inputFile, title));
+                        JobFileInstruction instruction = new JobFileInstruction(inputFile, title);
+
+                        {
+                            Attribute attributeDescription = instructionElement.getAttributeByName(new QName("description"));
+
+                            if (attributeDescription != null)
+                            {
+                                instruction.setDescription(attributeDescription.getValue());
+                            }
+                        }
+
+                        {
+                            Attribute attributeGame = instructionElement.getAttributeByName(new QName("game"));
+
+                            if (attributeGame != null)
+                            {
+                                instruction.setGame(attributeGame.getValue());
+                            }
+                        }
+
+                        {
+                            Attribute attributeLanguage = instructionElement.getAttributeByName(new QName("language"));
+
+                            if (attributeLanguage != null)
+                            {
+                                instruction.setLanguage(attributeLanguage.getValue());
+                            }
+                        }
+
+                        {
+                            Attribute attributeTags = instructionElement.getAttributeByName(new QName("tags"));
+
+                            if (attributeTags != null)
+                            {
+                                instruction.setTags(attributeTags.getValue());
+                            }
+                        }
+
+                        {
+                            Attribute attributeAccessPermission = instructionElement.getAttributeByName(new QName("access-permission"));
+
+                            if (attributeAccessPermission != null)
+                            {
+                                instruction.setAccessPermission(attributeAccessPermission.getValue());
+                            }
+                        }
+
+                        {
+                            Attribute attributePublicationDateTime = instructionElement.getAttributeByName(new QName("publication-date-time"));
+
+                            if (attributePublicationDateTime != null)
+                            {
+                                instruction.setPublicationDateTime(attributePublicationDateTime.getValue());
+                            }
+                        }
+
+                        instructions.add(instruction);
                     }
                     else if (tagName.equals("channel") == true)
                     {
@@ -768,7 +824,39 @@ public class twitch_video_uploader_2
             {
                 JobFileInstruction instruction = instructions.get(i);
 
-                writer.write("    <instruction action=\"upload\" file=\"" + instruction.getInputFile().getAbsolutePath() + "\" title=\"" + instruction.getTitle() + "\"/>\n");
+                writer.write("    <instruction action=\"upload\" file=\"" + instruction.getInputFile().getAbsolutePath() + "\" title=\"" + escapeAttribute(instruction.getTitle()) + "\"");
+
+                if (instruction.getDescription() != null)
+                {
+                    writer.write(" description=\"" + escapeAttribute(instruction.getDescription()) + "\"");
+                }
+
+                if (instruction.getGame() != null)
+                {
+                    writer.write(" game=\"" + escapeAttribute(instruction.getGame()) + "\"");
+                }
+
+                if (instruction.getLanguage() != null)
+                {
+                    writer.write(" language=\"" + escapeAttribute(instruction.getLanguage()) + "\"");
+                }
+
+                if (instruction.getTags() != null)
+                {
+                    writer.write(" tags=\"" + escapeAttribute(instruction.getTags()) + "\"");
+                }
+
+                if (instruction.getAccessPermission() != null)
+                {
+                    writer.write(" access-permission=\"" + escapeAttribute(instruction.getAccessPermission()) + "\"");
+                }
+
+                if (instruction.getPublicationDateTime() != null)
+                {
+                    writer.write(" publication-date-time=\"" + escapeAttribute(instruction.getPublicationDateTime()) + "\"");
+                }
+
+                writer.write("/>\n");
             }
 
             writer.write("  </instructions>\n");
@@ -885,7 +973,248 @@ public class twitch_video_uploader_2
             throw constructTermination("messageTwitchVideoUploader1WorkflowJobFileCantDeleteAPIKeysExposed", null, null, twitchVideoUploader1WorkflowJobFile.getAbsolutePath());
         }
 
+        {
+            File httpsClient1JobFile = new File(tempDirectory + File.separator + "jobfile_https_client_1.xml");
+
+            if (httpsClient1JobFile.exists() == true)
+            {
+                if (httpsClient1JobFile.isFile() == true)
+                {
+                    deleteSuccessful = false;
+
+                    try
+                    {
+                        deleteSuccessful = httpsClient1JobFile.delete();
+                    }
+                    catch (SecurityException ex)
+                    {
+
+                    }
+
+                    if (deleteSuccessful != true)
+                    {
+                        if (httpsClient1JobFile.canWrite() != true)
+                        {
+                            throw constructTermination("messageHttpsClient1JobFileExistsButIsntWritable", null, null, httpsClient1JobFile.getAbsolutePath());
+                        }
+                    }
+                }
+                else
+                {
+                    throw constructTermination("messageHttpsClient1JobPathExistsButIsntAFile", null, null, httpsClient1JobFile.getAbsolutePath());
+                }
+            }
+
+            File responseFile = new File(tempDirectory.getAbsolutePath() + File.separator + "response.json");
+
+            if (responseFile.exists() == true)
+            {
+                if (responseFile.isFile() == true)
+                {
+                    deleteSuccessful = false;
+
+                    try
+                    {
+                        deleteSuccessful = responseFile.delete();
+                    }
+                    catch (SecurityException ex)
+                    {
+
+                    }
+
+                    if (deleteSuccessful != true)
+                    {
+                        if (responseFile.canWrite() != true)
+                        {
+                            throw constructTermination("messageHttpsClient1ResponseFileExistsButIsntWritable", null, null, responseFile.getAbsolutePath());
+                        }
+                    }
+                }
+                else
+                {
+                    throw constructTermination("messageHttpsClient1ResponsePathExistsButIsntAFile",  null, null, responseFile.getAbsolutePath());
+                }
+            }
+
+            try
+            {
+                BufferedWriter writer = new BufferedWriter(
+                                        new OutputStreamWriter(
+                                        new FileOutputStream(httpsClient1JobFile),
+                                        "UTF-8"));
+
+                writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+                writer.write("<!-- This file was created by twitch_video_uploader_2 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
+                writer.write("<https-client-1-jobfile>\n");
+                writer.write("  <request url=\"https://api.twitch.tv/kraken/oauth2/revoke?client_id=feuq0hqseoxyg38p5inirhw2rstqce&amp;token=" + accessToken + "\" method=\"POST\">\n");
+                writer.write("    <header>\n");
+                writer.write("      <field name=\"Client-ID\" value=\"feuq0hqseoxyg38p5inirhw2rstqce\"/>\n");
+                writer.write("      <field name=\"charset\" value=\"utf-8\"/>\n");
+                writer.write("    </header>\n");
+                writer.write("  </request>\n");
+                writer.write("  <response destination=\"" + responseFile.getAbsolutePath() + "\"/>\n");
+                writer.write("</https-client-1-jobfile>\n");
+
+                writer.flush();
+                writer.close();
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw constructTermination("messageHttpsClient1JobFileWritingError", ex, null, httpsClient1JobFile.getAbsolutePath());
+            }
+            catch (UnsupportedEncodingException ex)
+            {
+                throw constructTermination("messageHttpsClient1JobFileWritingError", ex, null, httpsClient1JobFile.getAbsolutePath());
+            }
+            catch (IOException ex)
+            {
+                throw constructTermination("messageHttpsClient1JobFileWritingError", ex, null, httpsClient1JobFile.getAbsolutePath());
+            }
+
+            File httpsClient1ResultInfoFile = new File(tempDirectory.getAbsolutePath() + File.separator + "resultinfo_https_client_1.xml");
+
+            if (httpsClient1ResultInfoFile.exists() == true)
+            {
+                if (httpsClient1ResultInfoFile.isFile() == true)
+                {
+                    deleteSuccessful = false;
+
+                    try
+                    {
+                        deleteSuccessful = httpsClient1ResultInfoFile.delete();
+                    }
+                    catch (SecurityException ex)
+                    {
+
+                    }
+
+                    if (deleteSuccessful != true)
+                    {
+                        if (httpsClient1ResultInfoFile.canWrite() != true)
+                        {
+                            throw constructTermination("messageHttpsClient1ResultInfoFileExistsButIsntWritable", null, null, httpsClient1ResultInfoFile.getAbsolutePath());
+                        }
+                    }
+                }
+                else
+                {
+                    throw constructTermination("messageHttpsClient1ResultInfoPathExistsButIsntAFile", null, null, httpsClient1ResultInfoFile.getAbsolutePath());
+                }
+            }
+
+            builder = new ProcessBuilder("java", "https_client_1", httpsClient1JobFile.getAbsolutePath(), httpsClient1ResultInfoFile.getAbsolutePath());
+            builder.directory(new File(programPath + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + "digital_publishing_workflow_tools" + File.separator + "https_client" + File.separator + "https_client_1"));
+            builder.redirectErrorStream(true);
+
+            try
+            {
+                Process process = builder.start();
+                Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+
+                while (scanner.hasNext() == true)
+                {
+                    System.out.println(scanner.next());
+                }
+
+                scanner.close();
+            }
+            catch (IOException ex)
+            {
+                throw constructTermination("messageHttpsClient1ErrorWhileReadingOutput", ex, null, httpsClient1JobFile.getAbsolutePath());
+            }
+
+            try
+            {
+                deleteSuccessful = httpsClient1JobFile.delete();
+
+                if (deleteSuccessful == false)
+                {
+                    throw constructTermination("messageHttpsClient1JobFileCantDeleteAPIKeysExposed", null, null, httpsClient1JobFile.getAbsolutePath());
+                }
+            }
+            catch (SecurityException ex)
+            {
+                throw constructTermination("messageHttpsClient1JobFileCantDeleteAPIKeysExposed", ex, null, httpsClient1JobFile.getAbsolutePath());
+            }
+
+            if (httpsClient1ResultInfoFile.exists() != true)
+            {
+                throw constructTermination("messageHttpsClient1ResultInfoFileDoesntExistButShould", null, null, httpsClient1ResultInfoFile.getAbsolutePath());
+            }
+
+            if (httpsClient1ResultInfoFile.isFile() != true)
+            {
+                throw constructTermination("messageHttpsClient1ResultInfoPathExistsButIsntAFile", null, null, httpsClient1ResultInfoFile.getAbsolutePath());
+            }
+
+            if (httpsClient1ResultInfoFile.canRead() != true)
+            {
+                throw constructTermination("messageHttpsClient1ResultInfoFileIsntReadable", null, null, httpsClient1ResultInfoFile.getAbsolutePath());
+            }
+
+            wasSuccess = false;
+
+            try
+            {
+                XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+                InputStream in = new FileInputStream(httpsClient1ResultInfoFile);
+                XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
+
+                while (eventReader.hasNext() == true)
+                {
+                    XMLEvent event = eventReader.nextEvent();
+
+                    if (event.isStartElement() == true)
+                    {
+                        String tagName = event.asStartElement().getName().getLocalPart();
+
+                        if (tagName.equals("success") == true)
+                        {
+                            wasSuccess = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (XMLStreamException ex)
+            {
+                throw constructTermination("messageHttpsClient1ResultInfoFileErrorWhileReading", ex, null, httpsClient1ResultInfoFile.getAbsolutePath());
+            }
+            catch (SecurityException ex)
+            {
+                throw constructTermination("messageHttpsClient1ResultInfoFileErrorWhileReading", ex, null, httpsClient1ResultInfoFile.getAbsolutePath());
+            }
+            catch (IOException ex)
+            {
+                throw constructTermination("messageHttpsClient1ResultInfoFileErrorWhileReading", ex, null, httpsClient1ResultInfoFile.getAbsolutePath());
+            }
+
+            if (wasSuccess != true)
+            {
+                throw constructTermination("messageHttpsClient1CallWasntSuccessful", null, null, httpsClient1ResultInfoFile.getAbsolutePath());
+            }
+
+            if (responseFile.exists() != true)
+            {
+                throw constructTermination("messageHttpsClient1ResponseFileDoesntExist", null, null, responseFile.getAbsolutePath());
+            }
+        }
+
         return 0;
+    }
+
+    protected String escapeAttribute(String value)
+    {
+        String escaped = value;
+        // Ampersand needs to be the first, otherwise it would double-escape
+        // other escape sequences.
+        escaped = escaped.replaceAll("&", "&amp;");
+        escaped = escaped.replaceAll("<", "&lt;");
+        escaped = escaped.replaceAll(">", "&gt;");
+        escaped = escaped.replaceAll("\"", "&quot;");
+        escaped = escaped.replaceAll("'", "&apos;");
+
+        return escaped;
     }
 
     public InfoMessage constructInfoMessage(String id,

@@ -48,6 +48,72 @@ class JobFileInstruction
         return this.title;
     }
 
+    public String getDescription()
+    {
+        return this.description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public String getGame()
+    {
+        return this.game;
+    }
+
+    public void setGame(String game)
+    {
+        this.game = game;
+    }
+
+    public String getLanguage()
+    {
+        return this.language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
+
+    public String getTags()
+    {
+        return this.tags;
+    }
+
+    public void setTags(String tags)
+    {
+        this.tags = tags;
+    }
+
+    public String getAccessPermission()
+    {
+        return this.accessPermission;
+    }
+
+    public void setAccessPermission(String accessPermission)
+    {
+        this.accessPermission = accessPermission;
+    }
+
+    public String getPublicationDateTime()
+    {
+        return this.publicationDateTime;
+    }
+
+    public void setPublicationDateTime(String publicationDateTime)
+    {
+        this.publicationDateTime = publicationDateTime;
+    }
+
     protected File inputFile;
     protected String title;
+    protected String description;
+    protected String game;
+    protected String language;
+    protected String tags;
+    protected String accessPermission;
+    protected String publicationDateTime;
 }

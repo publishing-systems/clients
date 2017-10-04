@@ -73,15 +73,80 @@ public class AccessTokenObtainerServer implements Runnable, HttpHandler
         try
         {
             {
-                /** @todo HttpServer and HttpExchange seem to be unable to retain
-                  * URL fragments... */
-                String parameters = exchange.getRequestURI().getFragment();
+                String parameters = exchange.getRequestURI().getQuery();
 
                 if (parameters == null)
                 {
-                    this.infoMessages.add(constructInfoMessage("messageResponseURIWithoutParameters", true, null, null));
-                    server.stop(0);
-                    server = null;
+                    StringBuilder sbHtml = new StringBuilder();
+                    sbHtml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+                    sbHtml.append("<!DOCTYPE html\n");
+                    sbHtml.append("    PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n");
+                    sbHtml.append("    \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n");
+                    sbHtml.append("<html version=\"-//W3C//DTD XHTML 1.1//EN\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd\" xml:lang=\"" + this.getLocale().getISO3Language() + "\" lang=\"" + this.getLocale().getISO3Language() + "\">\n");
+                    sbHtml.append("  <head>\n");
+                    sbHtml.append("    <meta http-equiv=\"content-type\" content=\"application/xhtml+xml; charset=UTF-8\"/>\n");
+                    sbHtml.append("    <!-- This file was created by twitch_permission_obtainer_1 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
+                    sbHtml.append("    <!--\n");
+                    sbHtml.append("    Copyright (C) 2017 Stephan Kreutzer\n\n");
+                    sbHtml.append("    This file is part of twitch_permission_obtainer_1 workflow of clients for the\n");
+                    sbHtml.append("    automated_digital_publishing and digital_publishing_workflow_tools packages.\n\n");
+                    sbHtml.append("    twitch_permission_obtainer_1 workflow is free software: you can redistribute it and/or modify\n");
+                    sbHtml.append("    it under the terms of the GNU Affero General Public License version 3 or any later version,\n");
+                    sbHtml.append("    as published by the Free Software Foundation.\n\n");
+                    sbHtml.append("    twitch_permission_obtainer_1 workflow is distributed in the hope that it will be useful,\n");
+                    sbHtml.append("    but WITHOUT ANY WARRANTY; without even the implied warranty of\n");
+                    sbHtml.append("    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n");
+                    sbHtml.append("    GNU Affero General Public License 3 for more details.\n\n");
+                    sbHtml.append("    You should have received a copy of the GNU Affero General Public License 3\n");
+                    sbHtml.append("    along with twitch_permission_obtainer_1 workflow. If not, see <http://www.gnu.org/licenses/>.\n");
+                    sbHtml.append("    -->\n");
+                    sbHtml.append("    <title>Twitch Video Uploader</title>\n");
+                    sbHtml.append("    <script type=\"text/javascript\">\n");
+                    sbHtml.append("      function redirect() {\n");
+                    sbHtml.append("          var uri = document.location.href;\n\n");
+                    sbHtml.append("          if (uri.search(\"#\") >= 0) {\n");
+                    sbHtml.append("              uri = uri.replace(\"#\", \"?\");\n");
+                    sbHtml.append("          }\n");
+                    sbHtml.append("          else {\n");
+                    sbHtml.append("              return;\n");
+                    sbHtml.append("          }\n\n");
+                    sbHtml.append("          var redirectLinkElement = document.getElementById('redirect-link');\n\n");
+                    sbHtml.append("          if (redirectLinkElement != null) {\n");
+                    sbHtml.append("              redirectLinkElement.href = uri;\n");
+                    sbHtml.append("              redirectLinkElement.firstChild.nodeValue = uri;\n");
+                    sbHtml.append("          }\n\n");
+                    sbHtml.append("          window.location = uri;\n");
+                    sbHtml.append("      }\n");
+                    sbHtml.append("    </script>\n");
+                    sbHtml.append("  </head>\n");
+                    sbHtml.append("  <body onload=\"redirect();\">\n");
+                    sbHtml.append("    <div>\n");
+                    sbHtml.append("      <h1>Twitch Video Uploader</h1>\n");
+                    sbHtml.append("      <p>\n");
+
+                    String messageManualRedirect = getI10nString("messageManualRedirect");
+                    // Ampersand needs to be the first, otherwise it would double-encode
+                    // other entities.
+                    messageManualRedirect = messageManualRedirect.replaceAll("&", "&amp;");
+                    messageManualRedirect = messageManualRedirect.replaceAll("<", "&lt;");
+                    messageManualRedirect = messageManualRedirect.replaceAll(">", "&gt;");
+
+                    sbHtml.append("        " + messageManualRedirect + " <a href=\"#\" id=\"redirect-link\">redirect</a>\n");
+                    sbHtml.append("      </p>\n");
+                    sbHtml.append("    </div>\n");
+                    sbHtml.append("  </body>\n");
+                    sbHtml.append("</html>\n");
+
+                    String html = sbHtml.toString();
+
+                    Headers responseHeaders = exchange.getResponseHeaders();
+                    responseHeaders.add("Content-Type", "application/xhtml+xml");
+                    responseHeaders.add("Connection", "close");
+                    exchange.sendResponseHeaders(200, html.getBytes("UTF-8").length);
+
+                    OutputStream body = exchange.getResponseBody();
+                    body.write(html.getBytes("UTF-8"));
+
                     return;
                 }
 
@@ -128,6 +193,21 @@ public class AccessTokenObtainerServer implements Runnable, HttpHandler
             sbHtml.append("<html version=\"-//W3C//DTD XHTML 1.1//EN\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.w3.org/1999/xhtml http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd\" xml:lang=\"" + this.getLocale().getISO3Language() + "\" lang=\"" + this.getLocale().getISO3Language() + "\">\n");
             sbHtml.append("  <head>\n");
             sbHtml.append("    <meta http-equiv=\"content-type\" content=\"application/xhtml+xml; charset=UTF-8\"/>\n");
+            sbHtml.append("    <!-- This file was created by twitch_permission_obtainer_1 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
+            sbHtml.append("    <!--\n");
+            sbHtml.append("    Copyright (C) 2017 Stephan Kreutzer\n\n");
+            sbHtml.append("    This file is part of twitch_permission_obtainer_1 workflow of clients for the\n");
+            sbHtml.append("    automated_digital_publishing and digital_publishing_workflow_tools packages.\n\n");
+            sbHtml.append("    twitch_permission_obtainer_1 workflow is free software: you can redistribute it and/or modify\n");
+            sbHtml.append("    it under the terms of the GNU Affero General Public License version 3 or any later version,\n");
+            sbHtml.append("    as published by the Free Software Foundation.\n\n");
+            sbHtml.append("    twitch_permission_obtainer_1 workflow is distributed in the hope that it will be useful,\n");
+            sbHtml.append("    but WITHOUT ANY WARRANTY; without even the implied warranty of\n");
+            sbHtml.append("    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n");
+            sbHtml.append("    GNU Affero General Public License 3 for more details.\n\n");
+            sbHtml.append("    You should have received a copy of the GNU Affero General Public License 3\n");
+            sbHtml.append("    along with twitch_permission_obtainer_1 workflow. If not, see <http://www.gnu.org/licenses/>.\n");
+            sbHtml.append("    -->\n");
             sbHtml.append("    <title>Twitch Video Uploader</title>\n");
             sbHtml.append("  </head>\n");
             sbHtml.append("  <body>\n");

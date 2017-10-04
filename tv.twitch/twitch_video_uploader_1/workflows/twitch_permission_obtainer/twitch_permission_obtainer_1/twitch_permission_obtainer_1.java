@@ -500,12 +500,12 @@ public class twitch_permission_obtainer_1
             throw constructTermination("messageBrowserResultStateTokenDiffersCSRF", null, null);
         }
 
-        if (serverResult.containsKey("code") != true)
+        if (serverResult.containsKey("access_token") != true)
         {
             throw constructTermination("messageBrowserResultAccessTokenIsMissing", null, null);
         }
 
-        this.accessToken = serverResult.get("code");
+        this.accessToken = serverResult.get("access_token");
 
         return 0;
     }
