@@ -1,7 +1,7 @@
 # Copyright (C) 2016-2017  Stephan Kreutzer
 #
-# This file is part of twitch_video_uploader_1 of clients for the
-# automated_digital_publishing and digital_publishing_workflow_tools packages.
+# This file is part of clients for the automated_digital_publishing and
+# digital_publishing_workflow_tools packages.
 #
 # clients is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License version 3 or any later version,
@@ -17,7 +17,7 @@
 
 
 
-directories = ./twitch_channel_id_obtainer ./twitch_permission_obtainer ./twitch_video_uploader
+directories = ./twitch_channel_id_obtainer_1
 
 
 

@@ -23,5 +23,6 @@ along with twitch_video_uploader_2 workflow. If not, see <http://www.gnu.org/lic
     <!--instruction action="upload" file="video.mp4" title="Uploaded Video" description="This video was uploaded by twitch_video_uploader_2 workflow of clients for the automated_digital_publishing and digital_publishing_workflow_tools packages, which are free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org)." game="Creative" language="en" tags="uploaded video,twitch video uploader" access-permission="public"/-->
     <!--instruction action="upload" file="video.mp4" title="Uploaded Video"/-->
   </instructions>
-  <channel id="44322889"/>
+  <channel name="name"/>
+  <!--channel id="44322889"/-->
 </twitch-video-uploader-2-workflow-job>

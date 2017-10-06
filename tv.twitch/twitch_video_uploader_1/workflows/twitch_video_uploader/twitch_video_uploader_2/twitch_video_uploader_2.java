@@ -358,6 +358,7 @@ public class twitch_video_uploader_2
 
         List<JobFileInstruction> instructions = new ArrayList<JobFileInstruction>();
         String channelId = null;
+        String channelName = null;
 
         try
         {
@@ -497,19 +498,36 @@ public class twitch_video_uploader_2
                     else if (tagName.equals("channel") == true)
                     {
                         StartElement channelElement = event.asStartElement();
-                        Attribute idAttribute = channelElement.getAttributeByName(new QName("id"));
+                        Attribute attributeId = channelElement.getAttributeByName(new QName("id"));
+                        Attribute attributeName = channelElement.getAttributeByName(new QName("name"));
 
-                        if (idAttribute == null)
+                        if (attributeId == null &&
+                            attributeName == null)
                         {
                             throw constructTermination("messageJobFileEntryIsMissingAnAttribute", null, null, jobFile.getAbsolutePath(), tagName, "id");
                         }
 
-                        if (channelId != null)
+                        if (attributeId != null &&
+                            channelId != null)
                         {
                             throw constructTermination("messageJobFileElementConfiguredMoreThanOnce", null, null, jobFile.getAbsolutePath(), tagName);
                         }
 
-                        channelId = idAttribute.getValue();
+                        if (attributeName != null &&
+                            channelName != null)
+                        {
+                            throw constructTermination("messageJobFileElementConfiguredMoreThanOnce", null, null, jobFile.getAbsolutePath(), tagName);
+                        }
+
+                        if (attributeId != null)
+                        {
+                            channelId = attributeId.getValue();
+                        }
+
+                        if (attributeName != null)
+                        {
+                            channelName = attributeName.getValue();
+                        }
                     }
                 }
             }
@@ -532,9 +550,208 @@ public class twitch_video_uploader_2
             throw constructTermination("messageJobFileElementIsntConfigured", null, null, jobFile.getAbsolutePath(), "instruction");
         }
 
-        if (channelId == null)
+        if (channelId == null &&
+            channelName == null)
         {
             throw constructTermination("messageJobFileElementIsntConfigured", null, null, jobFile.getAbsolutePath(), "channel");
+        }
+
+        if (channelId == null &&
+            channelName != null)
+        {
+            File twitchChannelIdObtainer1WorkflowJobFile = new File(tempDirectory.getAbsolutePath() + File.separator + "jobfile_twitch_channel_id_obtainer_1_workflow.xml");
+            File twitchChannelIdObtainer1WorkflowResultInfoFile = new File(tempDirectory.getAbsolutePath() + File.separator + "resultinfo_twitch_channel_id_obtainer_1_workflow.xml");
+
+            if (twitchChannelIdObtainer1WorkflowJobFile.exists() == true)
+            {
+                if (twitchChannelIdObtainer1WorkflowJobFile.isFile() == true)
+                {
+                    boolean deleteSuccessful = false;
+
+                    try
+                    {
+                        deleteSuccessful = twitchChannelIdObtainer1WorkflowJobFile.delete();
+                    }
+                    catch (SecurityException ex)
+                    {
+
+                    }
+
+                    if (deleteSuccessful != true)
+                    {
+                        if (twitchChannelIdObtainer1WorkflowJobFile.canWrite() != true)
+                        {
+                            throw constructTermination("messageTwitchChannelIdObtainer1WorkflowJobFileExistsButIsntWritable", null, null, twitchChannelIdObtainer1WorkflowJobFile.getAbsolutePath());
+                        }
+                    }
+                }
+                else
+                {
+                    throw constructTermination("messageTwitchChannelIdObtainer1WorkflowJobFileExistsButIsntAFile", null, null, twitchChannelIdObtainer1WorkflowJobFile.getAbsolutePath());
+                }
+            }
+
+            if (twitchChannelIdObtainer1WorkflowResultInfoFile.exists() == true)
+            {
+                if (twitchChannelIdObtainer1WorkflowResultInfoFile.isFile() == true)
+                {
+                    boolean deleteSuccessful = false;
+
+                    try
+                    {
+                        deleteSuccessful = twitchChannelIdObtainer1WorkflowResultInfoFile.delete();
+                    }
+                    catch (SecurityException ex)
+                    {
+
+                    }
+
+                    if (deleteSuccessful != true)
+                    {
+                        if (twitchChannelIdObtainer1WorkflowResultInfoFile.canWrite() != true)
+                        {
+                            throw constructTermination("messageTwitchChannelIdObtainer1WorkflowResultInfoFileExistsButIsntWritable", null, null, twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath());
+                        }
+                    }
+                }
+                else
+                {
+                    throw constructTermination("messageTwitchChannelIdObtainer1WorkflowResultInfoPathExistsButIsntAFile", null, null, twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath());
+                }
+            }
+
+            try
+            {
+                BufferedWriter writer = new BufferedWriter(
+                                        new OutputStreamWriter(
+                                        new FileOutputStream(twitchChannelIdObtainer1WorkflowJobFile),
+                                        "UTF-8"));
+
+                writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+                writer.write("<!-- This file was created by twitch_video_uploader_2 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
+                writer.write("<twitch-channel-id-obtainer-1-workflow-job>\n");
+                writer.write("  <channel name=\"" + escapeAttribute(channelName) + "\"/>\n");
+                writer.write("</twitch-channel-id-obtainer-1-workflow-job>\n");
+
+                writer.flush();
+                writer.close();
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowJobFileWritingError", ex, null, twitchChannelIdObtainer1WorkflowJobFile.getAbsolutePath());
+            }
+            catch (UnsupportedEncodingException ex)
+            {
+                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowJobFileWritingError", ex, null, twitchChannelIdObtainer1WorkflowJobFile.getAbsolutePath());
+            }
+            catch (IOException ex)
+            {
+                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowJobFileWritingError", ex, null, twitchChannelIdObtainer1WorkflowJobFile.getAbsolutePath());
+            }
+
+            ProcessBuilder builder = new ProcessBuilder("java", "twitch_channel_id_obtainer_1", twitchChannelIdObtainer1WorkflowJobFile.getAbsolutePath(), twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath());
+            builder.directory(new File(programPath + File.separator + ".." + File.separator + ".." + File.separator +  "twitch_channel_id_obtainer" + File.separator + "twitch_channel_id_obtainer_1"));
+            builder.redirectErrorStream(true);
+
+            try
+            {
+                Process process = builder.start();
+                Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+
+                while (scanner.hasNext() == true)
+                {
+                    System.out.println(scanner.next());
+                }
+
+                scanner.close();
+            }
+            catch (IOException ex)
+            {
+                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowErrorWhileReadingOutput", ex, null, twitchChannelIdObtainer1WorkflowJobFile.getAbsolutePath());
+            }
+
+            if (twitchChannelIdObtainer1WorkflowResultInfoFile.exists() != true)
+            {
+                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowResultInfoFileDoesntExistButShould", null, null, twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath());
+            }
+
+            if (twitchChannelIdObtainer1WorkflowResultInfoFile.isFile() != true)
+            {
+                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowResultInfoPathExistsButIsntAFile", null, null, twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath());
+            }
+
+            if (twitchChannelIdObtainer1WorkflowResultInfoFile.canRead() != true)
+            {
+                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowResultInfoFileIsntReadable", null, null, twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath());
+            }
+
+            boolean wasSuccess = false;
+
+            try
+            {
+                XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+                InputStream in = new FileInputStream(twitchChannelIdObtainer1WorkflowResultInfoFile);
+                XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
+
+                while (eventReader.hasNext() == true)
+                {
+                    XMLEvent event = eventReader.nextEvent();
+
+                    if (event.isStartElement() == true)
+                    {
+                        String tagName = event.asStartElement().getName().getLocalPart();
+
+                        if (tagName.equals("success") == true)
+                        {
+                            wasSuccess = true;
+                        }
+                        else if (tagName.equals("channel") == true)
+                        {
+                            StartElement channelElement = event.asStartElement();
+                            Attribute attributeId = channelElement.getAttributeByName(new QName("id"));
+
+                            if (attributeId == null)
+                            {
+                                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowResultInfoFileEntryIsMissingAnAttribute", null, null, twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath(), tagName, "id");
+                            }
+
+                            if (channelId != null)
+                            {
+                                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowResultInfoFileElementConfiguredMoreThanOnce", null, null, twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath(), tagName);
+                            }
+
+                            channelId = attributeId.getValue();
+                        }
+                    }
+                }
+            }
+            catch (XMLStreamException ex)
+            {
+                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowResultInfoFileErrorWhileReading", ex, null, twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath());
+            }
+            catch (SecurityException ex)
+            {
+                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowResultInfoFileErrorWhileReading", ex, null, twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath());
+            }
+            catch (IOException ex)
+            {
+                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowResultInfoFileErrorWhileReading", ex, null, twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath());
+            }
+
+            if (wasSuccess != true)
+            {
+                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowCallWasntSuccessful", null, null, twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath());
+            }
+
+            if (channelId == null)
+            {
+                throw constructTermination("messageTwitchChannelIdObtainer1WorkflowResultInfoFileElementIsntConfigured", null, null, twitchChannelIdObtainer1WorkflowResultInfoFile.getAbsolutePath(), "channel-id");
+            }
+        }
+
+        if (channelId == null)
+        {
+            throw constructTermination("messageNoChannelIdObtained", null, null);
         }
 
         File twitchPermissionObtainer1WorkflowJobFile = new File(tempDirectory.getAbsolutePath() + File.separator + "jobfile_twitch_permission_obtainer_1_workflow.xml");

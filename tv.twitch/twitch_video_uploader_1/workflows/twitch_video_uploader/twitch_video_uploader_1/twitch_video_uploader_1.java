@@ -476,11 +476,11 @@ public class twitch_video_uploader_1
                         }
 
                         {
-                            Attribute attributeTagList = instructionElement.getAttributeByName(new QName("tag-list"));
+                            Attribute attributeTags = instructionElement.getAttributeByName(new QName("tags"));
 
-                            if (attributeTagList != null)
+                            if (attributeTags != null)
                             {
-                                String tagList = attributeTagList.getValue();
+                                String tagList = attributeTags.getValue();
 
                                 if (tagList.length() > 500)
                                 {
@@ -502,20 +502,20 @@ public class twitch_video_uploader_1
                         }
 
                         {
-                            Attribute attributeViewable = instructionElement.getAttributeByName(new QName("viewable"));
+                            Attribute attributeAccessPermission = instructionElement.getAttributeByName(new QName("access-permission"));
 
-                            if (attributeViewable != null)
+                            if (attributeAccessPermission != null)
                             {
-                                instruction.setAccessPermission(attributeViewable.getValue());
+                                instruction.setAccessPermission(attributeAccessPermission.getValue());
                             }
                         }
 
                         {
-                            Attribute attributeViewableAt = instructionElement.getAttributeByName(new QName("viewable-at"));
+                            Attribute attributePublicationDateTime = instructionElement.getAttributeByName(new QName("publication-date-time"));
 
-                            if (attributeViewableAt != null)
+                            if (attributePublicationDateTime != null)
                             {
-                                instruction.setPublicationDateTime(attributeViewableAt.getValue());
+                                instruction.setPublicationDateTime(attributePublicationDateTime.getValue());
                             }
                         }
 
