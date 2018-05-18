@@ -1,4 +1,4 @@
-/* Copyright (C) 2016-2017 Stephan Kreutzer
+/* Copyright (C) 2016-2018 Stephan Kreutzer
  *
  * This file is part of wiktionary_dump_to_xml_1 workflow, a submodule of the
  * wiktionary_dump_to_xml_1 package.
@@ -63,7 +63,7 @@ public class wiktionary_dump_to_xml_1
 {
     public static void main(String args[])
     {
-        System.out.print("wiktionary_dump_to_xml_1 workflow Copyright (C) 2016-2017 Stephan Kreutzer\n" +
+        System.out.print("wiktionary_dump_to_xml_1 workflow Copyright (C) 2016-2018 Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public License 3\n" +
@@ -225,13 +225,13 @@ public class wiktionary_dump_to_xml_1
                     writer.write("    </info-messages>\n");
                 }
 
-                if (converter.getOutputFileNames().size() > 0)
+                if (converter.getOutputFiles().size() > 0)
                 {
                     writer.write("    <converted-files>\n");
 
-                    for (int i = 0, max = converter.getOutputFileNames().size(); i < max; i++)
+                    for (int i = 0, max = converter.getOutputFiles().size(); i < max; i++)
                     {
-                        String name = converter.getOutputFileNames().get(i);
+                        String name = converter.getOutputFiles().get(i).getName();
 
                         writer.write("      <converted-file name=\"" + name + "\"/>\n");
                     }
@@ -264,7 +264,7 @@ public class wiktionary_dump_to_xml_1
 
     public int convert(String args[])
     {
-        this.outputFileNames.clear();
+        this.outputFiles.clear();
 
         if (args.length < 2)
         {
@@ -753,7 +753,7 @@ public class wiktionary_dump_to_xml_1
 
         }
 
-        for (int i = 0; i < articleFiles.size(); i++)
+        for (int i = 0, max = articleFiles.size(); i < max; i++)
         {
             File articleFile = articleFiles.get(i);
 
@@ -923,12 +923,191 @@ public class wiktionary_dump_to_xml_1
 
             if (wasSuccess == true)
             {
-                this.outputFileNames.add(outputFile.getName());
+                this.outputFiles.add(outputFile);
             }
             else
             {
-                this.infoMessages.add(constructInfoMessage("messageParsingError", true, null, null, wiktionaryArticleToXml1JobFile.getAbsolutePath(), wiktionaryArticleToXml1ResultInfoFile.getAbsolutePath()));
+                // This can easily lead to an out of memory exception.
+                //this.infoMessages.add(constructInfoMessage("messageParsingError", true, null, null, wiktionaryArticleToXml1JobFile.getAbsolutePath(), wiktionaryArticleToXml1ResultInfoFile.getAbsolutePath()));
             }
+        }
+
+        File concatenatedFile = new File(outputDirectory.getAbsolutePath() + File.separator + "result.xml");
+
+        try
+        {
+            concatenatedFile = concatenatedFile.getCanonicalFile();
+        }
+        catch (SecurityException ex)
+        {
+            throw constructTermination("messageConcatenatedFileCantGetCanonicalPath", ex, null, concatenatedFile.getAbsolutePath(), jobFile.getAbsolutePath());
+        }
+        catch (IOException ex)
+        {
+            throw constructTermination("messageConcatenatedFileCantGetCanonicalPath", ex, null, concatenatedFile.getAbsolutePath(), jobFile.getAbsolutePath());
+        }
+
+        if (concatenatedFile.exists() == true)
+        {
+            if (concatenatedFile.isFile() == true)
+            {
+                if (concatenatedFile.canWrite() != true)
+                {
+                    throw constructTermination("messageConcatenatedFileIsntWritable", null, null, concatenatedFile.getAbsolutePath());
+                }
+            }
+            else
+            {
+                throw constructTermination("messageConcatenatedPathIsntAFile", null, null, concatenatedFile.getAbsolutePath());
+            }
+        }
+
+        File xmlConcatenator1JobFile = new File(tempDirectory.getAbsolutePath() + File.separator + "xml_concatenator_1_jobfile.xml");
+
+        if (xmlConcatenator1JobFile.exists() == true)
+        {
+            if (xmlConcatenator1JobFile.isFile() != true)
+            {
+                throw constructTermination("messageXmlConcatenator1JobPathIsntAFile", null, null, xmlConcatenator1JobFile.getAbsolutePath());
+            }
+
+            if (xmlConcatenator1JobFile.canWrite() != true)
+            {
+                throw constructTermination("messageXmlConcatenator1JobFileIsntWritable", null, null, xmlConcatenator1JobFile.getAbsolutePath());
+            }
+        }
+
+        File xmlConcatenator1ResultInfoFile = new File(tempDirectory.getAbsolutePath() + File.separator + "xml_concatenator_1_resultinfo.xml");
+
+        if (xmlConcatenator1ResultInfoFile.exists() == true)
+        {
+            if (xmlConcatenator1ResultInfoFile.isFile() != true)
+            {
+                throw constructTermination("messageXmlConcatenator1ResultInfoPathIsntAFile", null, null, xmlConcatenator1ResultInfoFile.getAbsolutePath());
+            }
+
+            if (xmlConcatenator1ResultInfoFile.canWrite() != true)
+            {
+                throw constructTermination("messageXmlConcatenator1ResultInfoFileIsntWritable", null, null, xmlConcatenator1ResultInfoFile.getAbsolutePath());
+            }
+        }
+
+        try
+        {
+            BufferedWriter writer = new BufferedWriter(
+                                    new OutputStreamWriter(
+                                    new FileOutputStream(xmlConcatenator1JobFile),
+                                    "UTF-8"));
+
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            writer.write("<!-- This file was created by wiktionary_dump_to_xml_1 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
+            writer.write("<xml-concatenator-1-job>\n");
+            writer.write("  <input-files>\n");
+
+            for (int i = 0, max = this.outputFiles.size(); i < max; i++)
+            {
+                File outputFile = this.outputFiles.get(i);
+
+                writer.write("    <input-file path=\"" + outputFile.getAbsolutePath() + "\"/>\n");
+            }
+
+            writer.write("  </input-files>\n");
+            writer.write("  <output-file path=\"" + concatenatedFile.getAbsolutePath() + "\" processing-instruction-data=\"encoding=&quot;UTF-8&quot;\" root-element-name=\"wiktionary-articles\"/>\n");
+            writer.write("</xml-concatenator-1-job>\n");
+
+            writer.flush();
+            writer.close();
+        }
+        catch (FileNotFoundException ex)
+        {
+            throw constructTermination("messageXmlConcatenator1JobFileErrorWhileWriting", ex, null, xmlConcatenator1JobFile.getAbsolutePath());
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            throw constructTermination("messageXmlConcatenator1JobFileErrorWhileWriting", ex, null, xmlConcatenator1JobFile.getAbsolutePath());
+        }
+        catch (IOException ex)
+        {
+            throw constructTermination("messageXmlConcatenator1JobFileErrorWhileWriting", ex, null, xmlConcatenator1JobFile.getAbsolutePath());
+        }
+
+        builder = new ProcessBuilder("java", "xml_concatenator_1", xmlConcatenator1JobFile.getAbsolutePath(), xmlConcatenator1ResultInfoFile.getAbsolutePath());
+        builder.directory(new File(programPath + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + ".." + File.separator + "digital_publishing_workflow_tools" + File.separator + "xml_concatenator" + File.separator + "xml_concatenator_1"));
+        builder.redirectErrorStream(true);
+
+        try
+        {
+            Process process = builder.start();
+            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+
+            while (scanner.hasNext() == true)
+            {
+                System.out.println(scanner.next());
+            }
+
+            scanner.close();
+        }
+        catch (IOException ex)
+        {
+            throw constructTermination("messageXmlConcatenator1ErrorWhileReadingOutput", ex, null);
+        }
+
+        if (xmlConcatenator1ResultInfoFile.exists() != true)
+        {
+            throw constructTermination("messageXmlConcatenator1ResultInfoFileDoesntExistButShould", null, null, xmlConcatenator1ResultInfoFile.getAbsolutePath());
+        }
+
+        if (xmlConcatenator1ResultInfoFile.isFile() != true)
+        {
+            throw constructTermination("messageXmlConcatenator1ResultInfoPathIsntAFile", null, null, xmlConcatenator1ResultInfoFile.getAbsolutePath());
+        }
+
+        if (xmlConcatenator1ResultInfoFile.canRead() != true)
+        {
+            throw constructTermination("messageXmlConcatenator1ResultInfoFileIsntReadable", null, null, xmlConcatenator1ResultInfoFile.getAbsolutePath());
+        }
+
+        wasSuccess = false;
+
+        {
+            try
+            {
+                XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+                InputStream in = new FileInputStream(xmlConcatenator1ResultInfoFile);
+                XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
+
+                while (eventReader.hasNext() == true)
+                {
+                    XMLEvent event = eventReader.nextEvent();
+
+                    if (event.isStartElement() == true)
+                    {
+                        String tagName = event.asStartElement().getName().getLocalPart();
+
+                        if (tagName.equals("success") == true)
+                        {
+                            wasSuccess = true;
+                        }
+                    }
+                }
+            }
+            catch (XMLStreamException ex)
+            {
+                throw constructTermination("messageXmlConcatenator1ResultInfoFileErrorWhileReading", ex, null, xmlConcatenator1ResultInfoFile.getAbsolutePath());
+            }
+            catch (SecurityException ex)
+            {
+                throw constructTermination("messageXmlConcatenator1ResultInfoFileErrorWhileReading", ex, null, xmlConcatenator1ResultInfoFile.getAbsolutePath());
+            }
+            catch (IOException ex)
+            {
+                throw constructTermination("messageXmlConcatenator1ResultInfoFileErrorWhileReading", ex, null, xmlConcatenator1ResultInfoFile.getAbsolutePath());
+            }
+        }
+
+        if (wasSuccess != true)
+        {
+            throw constructTermination("messageXmlConcatenator1CallWasntSuccessful", null, null, xmlConcatenator1JobFile.getAbsolutePath());
         }
 
         return 0;
@@ -1264,9 +1443,9 @@ public class wiktionary_dump_to_xml_1
         return -1;
     }
 
-    public List<String> getOutputFileNames()
+    public List<File> getOutputFiles()
     {
-        return this.outputFileNames;
+        return this.outputFiles;
     }
 
     public List<InfoMessage> getInfoMessages()
@@ -1308,7 +1487,7 @@ public class wiktionary_dump_to_xml_1
         return formatter.format(arguments);
     }
 
-    protected List<String> outputFileNames = new ArrayList<String>();
+    protected List<File> outputFiles = new ArrayList<File>();
 
     public static File resultInfoFile = null;
     protected List<InfoMessage> infoMessages = new ArrayList<InfoMessage>();

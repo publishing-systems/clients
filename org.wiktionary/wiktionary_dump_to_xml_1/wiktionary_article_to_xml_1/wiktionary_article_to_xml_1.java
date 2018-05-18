@@ -1666,9 +1666,9 @@ public class wiktionary_article_to_xml_1
             try
             {
                 BufferedWriter outputWriter = new BufferedWriter(
-                                            new OutputStreamWriter(
-                                            new FileOutputStream(outputFile),
-                                            "UTF-8"));
+                                              new OutputStreamWriter(
+                                              new FileOutputStream(outputFile),
+                                              "UTF-8"));
 
                 try
                 {
