@@ -1,4 +1,4 @@
-/* Copyright (C) 2016-2017 Stephan Kreutzer
+/* Copyright (C) 2016-2018 Stephan Kreutzer
  *
  * This file is part of wiktionary_article_to_xml_1, a submodule of the
  * wiktionary_dump_to_xml_1 package.
@@ -79,7 +79,7 @@ public class wiktionary_article_to_xml_1
 {
     public static void main(String args[])
     {
-        System.out.print("wiktionary_article_to_xml_1 Copyright (C) 2016-2017 Stephan Kreutzer\n" +
+        System.out.print("wiktionary_article_to_xml_1 Copyright (C) 2016-2018 Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public License 3\n" +
@@ -1674,6 +1674,7 @@ public class wiktionary_article_to_xml_1
                 {
                     outputWriter.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
                     outputWriter.append("<!-- This file was created by wiktionary_article_to_xml_1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/clients/ and http://www.publishing-systems.org). -->\n");
+                    outputWriter.append("<!-- The data is from the German Wiktionary (https://de.wiktionary.org), which is licensed under the Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 3.0 Deutschland (https://creativecommons.org/licenses/by-sa/3.0/legalcode.de) or in the Public Domain. For some data entries, additional libre-free licenses are offered optionally. -->\n");
                     outputWriter.append("<wiktionary-article>");
                     outputWriter.append(sbOutput.toString());
                     outputWriter.append("</wiktionary-article>\n");

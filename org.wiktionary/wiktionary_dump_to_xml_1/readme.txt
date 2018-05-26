@@ -11,3 +11,4 @@
   9. Reference the extracted .xml file in ./workflows/wiktionary_dump_to_xml_1/jobfile.xml in the "path" attribute of the <input-file/> element.
  10. Call "java wiktionary_dump_to_xml_1 jobfile.xml resultinfo.xml" in ./workflows/wiktionary_dump_to_xml_1/. It can take a long time to complete. Consider redirecting the output by adding " > out.log" to the call, and eventually an additional " 2>&1" for the error output.
  11. Go to ./workflows/wiktionary_dump_to_xml_1/output/ and inspect the result.xml file if the call was successful.
+ 12. You can optionally call ../wiktionary_xml_to_all_1/wiktionary_xml_to_all_1.sh to generate output files from ./workflows/wiktionary_dump_to_xml_1/output/result.xml.

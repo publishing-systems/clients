@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2015-2018 Stephan Kreutzer
+
+This file is part of wiktionary_xml_to_all_1, a submodule of
+clients for the digital_publishing_workflow_tools package.
+
+stylesheet_xhtml_de_ar_nouns_article.xsl is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 or any later version,
+as published by the Free Software Foundation.
+
+stylesheet_xhtml_de_ar_nouns_article.xsl is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with stylesheet_xhtml_de_ar_nouns_article.xsl. If not, see <http://www.gnu.org/licenses/>.
+-->
+<xml-xslt-transformator-1-jobfile>
+  <job input-file="../wiktionary_dump_to_xml_1/workflows/wiktionary_dump_to_xml_1/output/result.xml" entities-resolver-config-file="../../../digital_publishing_workflow_tools/xml_xslt_transformator/xml_xslt_transformator_1/entities/config_empty.xml" stylesheet-file="stylesheet_xhtml_de_nouns_article.xsl" output-file="de_substantive_artikel.html"/>
+  <job input-file="../wiktionary_dump_to_xml_1/workflows/wiktionary_dump_to_xml_1/output/result.xml" entities-resolver-config-file="../../../digital_publishing_workflow_tools/xml_xslt_transformator/xml_xslt_transformator_1/entities/config_empty.xml" stylesheet-file="stylesheet_xhtml_de_nouns_article_unique.xsl" output-file="de_substantive_artikel_eindeutig.html"/>
+  <job input-file="../wiktionary_dump_to_xml_1/workflows/wiktionary_dump_to_xml_1/output/result.xml" entities-resolver-config-file="../../../digital_publishing_workflow_tools/xml_xslt_transformator/xml_xslt_transformator_1/entities/config_empty.xml" stylesheet-file="stylesheet_xhtml_de_ar_nouns_article.xsl" output-file="de_ar_substantive_artikel.html"/>
+  <job input-file="../wiktionary_dump_to_xml_1/workflows/wiktionary_dump_to_xml_1/output/result.xml" entities-resolver-config-file="../../../digital_publishing_workflow_tools/xml_xslt_transformator/xml_xslt_transformator_1/entities/config_empty.xml" stylesheet-file="stylesheet_xhtml_de_ar_nouns_article_unique.xsl" output-file="de_ar_substantive_artikel_eindeutig.html"/>
+  <job input-file="../wiktionary_dump_to_xml_1/workflows/wiktionary_dump_to_xml_1/output/result.xml" entities-resolver-config-file="../../../digital_publishing_workflow_tools/xml_xslt_transformator/xml_xslt_transformator_1/entities/config_empty.xml" stylesheet-file="stylesheet_xhtml_de_nouns_article_der.xsl" output-file="de_substantive_artikel_der.html"/>
+  <job input-file="../wiktionary_dump_to_xml_1/workflows/wiktionary_dump_to_xml_1/output/result.xml" entities-resolver-config-file="../../../digital_publishing_workflow_tools/xml_xslt_transformator/xml_xslt_transformator_1/entities/config_empty.xml" stylesheet-file="stylesheet_xhtml_de_nouns_article_der_unique.xsl" output-file="de_substantive_artikel_der_eindeutig.html"/>
+  <job input-file="../wiktionary_dump_to_xml_1/workflows/wiktionary_dump_to_xml_1/output/result.xml" entities-resolver-config-file="../../../digital_publishing_workflow_tools/xml_xslt_transformator/xml_xslt_transformator_1/entities/config_empty.xml" stylesheet-file="stylesheet_xhtml_de_nouns_article_die.xsl" output-file="de_substantive_artikel_die.html"/>
+  <job input-file="../wiktionary_dump_to_xml_1/workflows/wiktionary_dump_to_xml_1/output/result.xml" entities-resolver-config-file="../../../digital_publishing_workflow_tools/xml_xslt_transformator/xml_xslt_transformator_1/entities/config_empty.xml" stylesheet-file="stylesheet_xhtml_de_nouns_article_die_unique.xsl" output-file="de_substantive_artikel_die_eindeutig.html"/>
+  <job input-file="../wiktionary_dump_to_xml_1/workflows/wiktionary_dump_to_xml_1/output/result.xml" entities-resolver-config-file="../../../digital_publishing_workflow_tools/xml_xslt_transformator/xml_xslt_transformator_1/entities/config_empty.xml" stylesheet-file="stylesheet_xhtml_de_nouns_article_das.xsl" output-file="de_substantive_artikel_das.html"/>
+  <job input-file="../wiktionary_dump_to_xml_1/workflows/wiktionary_dump_to_xml_1/output/result.xml" entities-resolver-config-file="../../../digital_publishing_workflow_tools/xml_xslt_transformator/xml_xslt_transformator_1/entities/config_empty.xml" stylesheet-file="stylesheet_xhtml_de_nouns_article_das_unique.xsl" output-file="de_substantive_artikel_das_eindeutig.html"/>
+</xml-xslt-transformator-1-jobfile>
